@@ -29,6 +29,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Location;
 import model.Sprinkler;
+import model.SprinklerGroup;
 
 public class SprinklerSystemController implements Initializable {
 	@FXML
@@ -163,7 +164,7 @@ public class SprinklerSystemController implements Initializable {
 			.observableArrayList(VOLUME_CHOICES);
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
-	private List<Sprinkler> sprinklers;
+	private SprinklerGroup[] sprinklerGroup;
 	private Map<Integer, Integer> waterConsumptionMap; // Keep track of
 														// month/volume water
 														// consumption
@@ -194,18 +195,21 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initGardenSprinklers() {
-		this.sprinklers = new ArrayList<Sprinkler>();
+		this.sprinklerGroup = new SprinklerGroup[4];
 		this.waterConsumptionMap = new HashMap<Integer, Integer>();
 		this.userInterruptMap = new HashMap<Sprinkler, Integer>();
 
 		Location location = Location.North;
 		int locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		List<Sprinkler> sprinklers = new ArrayList<Sprinkler>();
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklerGroup[0] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.South;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers = new ArrayList<Sprinkler>();
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
@@ -215,17 +219,21 @@ public class SprinklerSystemController implements Initializable {
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklerGroup[1] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.West;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers = new ArrayList<Sprinkler>();
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklerGroup[2] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.East;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers = new ArrayList<Sprinkler>();
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
@@ -233,6 +241,7 @@ public class SprinklerSystemController implements Initializable {
 		sprinklers.add(new Sprinkler(location, locationId));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklerGroup[3] = new SprinklerGroup(location, sprinklers);
 	}
 
 	private void initViews() {
@@ -305,8 +314,10 @@ public class SprinklerSystemController implements Initializable {
 
 	private void initIndividualConfig() {
 		List<String> sprinklerIds = new ArrayList<>();
-		for (Sprinkler sprinkler : sprinklers) {
-			sprinklerIds.add(sprinkler.getId());
+		for (SprinklerGroup sg : sprinklerGroup) {
+			for (Sprinkler sprinkler : sg.getSprinklers()) {
+				sprinklerIds.add(sprinkler.getId());
+			}
 		}
 		this.individualConfigIdChoiceBox.setItems(FXCollections.observableArrayList(sprinklerIds));
 		this.individualConfigIdChoiceBox.getSelectionModel().selectFirst();
@@ -362,67 +373,69 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initSprinklerStatusScrollPane() {
-		for (Sprinkler sprinkler : sprinklers) {
-			HBox hBox = new HBox();
-			hBox.setAlignment(Pos.CENTER);
+		for (SprinklerGroup sg : sprinklerGroup) {
+			for (Sprinkler sprinkler : sg.getSprinklers()) {
+				HBox hBox = new HBox();
+				hBox.setAlignment(Pos.CENTER);
 
-			// Id label
-			Label idLabel = new Label(sprinkler.getId());
-			idLabel.setMinWidth(100);
-			idLabel.setAlignment(Pos.CENTER);
-			hBox.getChildren().add(idLabel);
+				// Id label
+				Label idLabel = new Label(sprinkler.getId());
+				idLabel.setMinWidth(100);
+				idLabel.setAlignment(Pos.CENTER);
+				hBox.getChildren().add(idLabel);
 
-			// Functional label
-			Label functionalLabel = new Label("Functional: ");
-			functionalLabel.setMinWidth(60);
-			functionalLabel.setAlignment(Pos.CENTER);
-			hBox.getChildren().add(functionalLabel);
-			// Functional status
-			CheckBox functionalCheckBox = new CheckBox();
-			functionalCheckBox.disableProperty().set(true);
-			functionalCheckBox.selectedProperty().bind(sprinkler.functionalProperty());
-			functionalCheckBox.setMinWidth(20);
-			hBox.getChildren().add(functionalCheckBox);
+				// Functional label
+				Label functionalLabel = new Label("Functional: ");
+				functionalLabel.setMinWidth(60);
+				functionalLabel.setAlignment(Pos.CENTER);
+				hBox.getChildren().add(functionalLabel);
+				// Functional status
+				CheckBox functionalCheckBox = new CheckBox();
+				functionalCheckBox.disableProperty().set(true);
+				functionalCheckBox.selectedProperty().bind(sprinkler.functionalProperty());
+				functionalCheckBox.setMinWidth(20);
+				hBox.getChildren().add(functionalCheckBox);
 
-			// On label
-			Label onLabel = new Label("On: ");
-			onLabel.setMinWidth(20);
-			onLabel.setAlignment(Pos.CENTER);
-			hBox.getChildren().add(onLabel);
-			// On Status
-			CheckBox onCheckBox = new CheckBox();
-			onCheckBox.disableProperty().set(true);
-			onCheckBox.selectedProperty().bind(sprinkler.onProperty());
-			onCheckBox.setMinWidth(20);
-			hBox.getChildren().add(onCheckBox);
+				// On label
+				Label onLabel = new Label("On: ");
+				onLabel.setMinWidth(20);
+				onLabel.setAlignment(Pos.CENTER);
+				hBox.getChildren().add(onLabel);
+				// On Status
+				CheckBox onCheckBox = new CheckBox();
+				onCheckBox.disableProperty().set(true);
+				onCheckBox.selectedProperty().bind(sprinkler.onProperty());
+				onCheckBox.setMinWidth(20);
+				hBox.getChildren().add(onCheckBox);
 
-			// Force interrupt label
-			Label interruptLabel = new Label("Force interrupt:");
-			interruptLabel.setMinWidth(80);
-			interruptLabel.setAlignment(Pos.CENTER);
-			hBox.getChildren().add(interruptLabel);
-			// Force enable/disable for a period
-			Button forceInterruptButton = new Button();
-			forceInterruptButton.setText("" + sprinkler.isOn());
-			forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
-			forceInterruptButton.setMinWidth(20);
-			hBox.getChildren().add(forceInterruptButton);
+				// Force interrupt label
+				Label interruptLabel = new Label("Force interrupt:");
+				interruptLabel.setMinWidth(80);
+				interruptLabel.setAlignment(Pos.CENTER);
+				hBox.getChildren().add(interruptLabel);
+				// Force enable/disable for a period
+				Button forceInterruptButton = new Button();
+				forceInterruptButton.setText("" + sprinkler.isOn());
+				forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
+				forceInterruptButton.setMinWidth(20);
+				hBox.getChildren().add(forceInterruptButton);
 
-			switch (sprinkler.getLocation()) {
-			case North:
-				this.sprinklerNorthVBox.getChildren().add(hBox);
-				break;
-			case South:
-				this.sprinklerSouthVBox.getChildren().add(hBox);
-				break;
-			case West:
-				this.sprinklerWestVBox.getChildren().add(hBox);
-				break;
-			case East:
-				this.sprinklerEastVBox.getChildren().add(hBox);
-				break;
-			default:
-				assert false;
+				switch (sprinkler.getLocation()) {
+				case North:
+					this.sprinklerNorthVBox.getChildren().add(hBox);
+					break;
+				case South:
+					this.sprinklerSouthVBox.getChildren().add(hBox);
+					break;
+				case West:
+					this.sprinklerWestVBox.getChildren().add(hBox);
+					break;
+				case East:
+					this.sprinklerEastVBox.getChildren().add(hBox);
+					break;
+				default:
+					assert false;
+				}
 			}
 		}
 	}
