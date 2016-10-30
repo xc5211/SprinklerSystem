@@ -55,7 +55,7 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="timeText11" strokeType="OUTSIDE" strokeWidth="0.0" text="F" wrappingWidth="26.8046875">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="F" wrappingWidth="26.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>

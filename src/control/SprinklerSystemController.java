@@ -25,8 +25,6 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	private Text temperatureText;
 	@FXML
-	private Text timeText11;
-	@FXML
 	private ChoiceBox groupConfigGroupChoiceBox;
 	@FXML
 	private CheckBox groupEnableDisableCheckBox;
@@ -184,6 +182,7 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initViews() {
+		
 		// TODO Auto-generated method stub
 	}
 
