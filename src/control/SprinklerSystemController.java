@@ -1,6 +1,12 @@
 package control;
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
@@ -10,8 +16,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.Location;
+import model.Sprinkler;
 
-public class SprinklerSystemController {
+public class SprinklerSystemController implements Initializable {
 	@FXML
 	private Text timeText;
 	@FXML
@@ -135,28 +143,51 @@ public class SprinklerSystemController {
 	@FXML
 	private Canvas gardenMapCanvas;
 
-	// called by the FXML loader after the labels declared above are injected:
-	public void initialize() {
-		initializeDailyTemperatureSimulator();
-		initializeGardenSprinklers();
-		initializeViews();
-		initializeListeners();
+	private TimeTemperatureSimulator timeTemperatureSimulator;
+	private Map<Location, Sprinkler> sprinklerMap;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		initDailyTemperatureSimulator();
+		initGardenSprinklers();
+		initViews();
+		initListeners();
 		// TODO: more?
 	}
 
-	private void initializeDailyTemperatureSimulator() {
-		// TODO Auto-generated method stub
+	private void initDailyTemperatureSimulator() {
+		timeTemperatureSimulator = new TimeTemperatureSimulator();
+		timeTemperatureSimulator.start();
+
+		timeText.textProperty().bind(timeTemperatureSimulator.getTimeStringProperty());
+		temperatureText.textProperty().bind(timeTemperatureSimulator.getTemperatureProperty());
 	}
-	
-	private void initializeGardenSprinklers() {
+
+	private void initGardenSprinklers() {
+		sprinklerMap = new HashMap<Location, Sprinkler>();
+
+		sprinklerMap.put(Location.North, new Sprinkler());
+		sprinklerMap.put(Location.North, new Sprinkler());
+		sprinklerMap.put(Location.North, new Sprinkler());
+
+		sprinklerMap.put(Location.South, new Sprinkler());
+		sprinklerMap.put(Location.South, new Sprinkler());
+		sprinklerMap.put(Location.South, new Sprinkler());
+
+		sprinklerMap.put(Location.West, new Sprinkler());
+		sprinklerMap.put(Location.West, new Sprinkler());
+		sprinklerMap.put(Location.West, new Sprinkler());
+
+		sprinklerMap.put(Location.East, new Sprinkler());
+		sprinklerMap.put(Location.East, new Sprinkler());
+		sprinklerMap.put(Location.East, new Sprinkler());
+	}
+
+	private void initViews() {
 		// TODO Auto-generated method stub
 	}
 
-	private void initializeViews() {
-		// TODO Auto-generated method stub
-	}
-	
-	private void initializeListeners() {
+	private void initListeners() {
 		// TODO Auto-generated method stub
 	}
 

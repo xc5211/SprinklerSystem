@@ -47,7 +47,7 @@
                               <Insets left="80.0" top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="temperatureText" strokeType="OUTSIDE" strokeWidth="0.0" text="20" textAlignment="CENTER" wrappingWidth="97.8046875">
+                        <Text fx:id="temperatureText" strokeType="OUTSIDE" strokeWidth="0.0" text="60" textAlignment="CENTER" wrappingWidth="97.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -55,7 +55,7 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="timeText11" strokeType="OUTSIDE" strokeWidth="0.0" text="C" wrappingWidth="26.8046875">
+                        <Text fx:id="timeText11" strokeType="OUTSIDE" strokeWidth="0.0" text="F" wrappingWidth="26.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>
