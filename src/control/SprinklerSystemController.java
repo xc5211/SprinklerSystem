@@ -20,6 +20,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.Location;
 import model.Sprinkler;
 
@@ -127,30 +128,32 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	private Tab tabNorth;
 	@FXML
-	private VBox sprinklerNorthScrollPane;
+	private VBox sprinklerNorthVBox;
 	@FXML
 	private Tab tabSouth;
 	@FXML
-	private VBox sprinklerSouthScrollPane;
+	private VBox sprinklerSouthVBox;
 	@FXML
 	private Tab tabWest;
 	@FXML
-	private VBox sprinklerWestScrollPane;
+	private VBox sprinklerWestVBox;
 	@FXML
 	private Tab tabEast;
 	@FXML
-	private VBox sprinklerEastScrollPane;
+	private VBox sprinklerEastVBox;
 	@FXML
 	private BarChart<Integer, Integer> waterVolumeBarGraph;
 	@FXML
 	private Canvas gardenMapCanvas;
+
+	private Stage stage;
 
 	private final static List<Integer> TIME_CHOICES = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 			15, 16, 17, 18, 19, 20, 21, 22, 23);
 	private final static List<Integer> VOLUME_CHOICES = Arrays.asList(0, 1, 2, 3, 4, 5);
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
-	private Map<Location, Sprinkler> sprinklerMap;
+	private Map<Location, List<Sprinkler>> sprinklerMap;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -159,6 +162,10 @@ public class SprinklerSystemController implements Initializable {
 		initViews();
 		initListeners();
 		// TODO: more?
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	private void initTimeTemperatureSimulator() {
@@ -170,23 +177,31 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initGardenSprinklers() {
-		this.sprinklerMap = new HashMap<Location, Sprinkler>();
+		this.sprinklerMap = new HashMap<Location, List<Sprinkler>>();
 
-		this.sprinklerMap.put(Location.North, new Sprinkler());
-		this.sprinklerMap.put(Location.North, new Sprinkler());
-		this.sprinklerMap.put(Location.North, new Sprinkler());
+		List<Sprinkler> list = new ArrayList<>();
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		this.sprinklerMap.put(Location.North, list);
 
-		this.sprinklerMap.put(Location.South, new Sprinkler());
-		this.sprinklerMap.put(Location.South, new Sprinkler());
-		this.sprinklerMap.put(Location.South, new Sprinkler());
+		list = new ArrayList<>();
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		this.sprinklerMap.put(Location.South, list);
 
-		this.sprinklerMap.put(Location.West, new Sprinkler());
-		this.sprinklerMap.put(Location.West, new Sprinkler());
-		this.sprinklerMap.put(Location.West, new Sprinkler());
+		list = new ArrayList<>();
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		this.sprinklerMap.put(Location.West, list);
 
-		this.sprinklerMap.put(Location.East, new Sprinkler());
-		this.sprinklerMap.put(Location.East, new Sprinkler());
-		this.sprinklerMap.put(Location.East, new Sprinkler());
+		list = new ArrayList<>();
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		list.add(new Sprinkler());
+		this.sprinklerMap.put(Location.East, list);
 	}
 
 	private void initViews() {
@@ -253,8 +268,10 @@ public class SprinklerSystemController implements Initializable {
 
 	private void initIndividualConfig() {
 		List<String> sprinklerIds = new ArrayList<>();
-		for (Map.Entry<Location, Sprinkler> entry : this.sprinklerMap.entrySet()) {
-			sprinklerIds.add(entry.getValue().getId());
+		for (Map.Entry<Location, List<Sprinkler>> entry : this.sprinklerMap.entrySet()) {
+			for (Sprinkler sprinkler : entry.getValue()) {
+				sprinklerIds.add(sprinkler.getId());
+			}
 		}
 
 		this.individualConfigIdChoiceBox.setItems(FXCollections.observableArrayList(sprinklerIds));
@@ -318,20 +335,31 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initNorthSprinklers() {
-		// TODO Auto-generated method stub
+		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.North);
+		// TODO: id
+		// TODO: status
+		// TODO: enable/disable for a period
+		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test1"));
+		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test2"));
+		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test3"));
+		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test4"));
+		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test5"));
 	}
 
 	private void initSouthSprinklers() {
+		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.South);
 		// TODO Auto-generated method stub
 
 	}
 
 	private void initWestSprinklers() {
+		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.West);
 		// TODO Auto-generated method stub
 
 	}
 
 	private void initEastSprinklers() {
+		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.East);
 		// TODO Auto-generated method stub
 
 	}
@@ -347,7 +375,7 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initListeners() {
-		// TODO Auto-generated method stub
+		// TODO need this?
 	}
 
 	// Event Listener on ChoiceBox[#groupConfigGroupChoiceBox].onMouseClicked

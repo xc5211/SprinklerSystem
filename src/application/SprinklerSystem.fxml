@@ -553,7 +553,7 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
                                  <children>
-                                    <VBox fx:id="sprinklerNorthScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                    <VBox fx:id="sprinklerNorthVBox" prefHeight="250.0" prefWidth="820.0" />
                                  </children>
                               </AnchorPane>
                           </content>
@@ -566,7 +566,7 @@
                            <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
                                  <children>
-                                    <VBox fx:id="sprinklerSouthScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                    <VBox fx:id="sprinklerSouthVBox" prefHeight="250.0" prefWidth="820.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -579,7 +579,7 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
                                  <children>
-                                    <VBox fx:id="sprinklerWestScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                    <VBox fx:id="sprinklerWestVBox" prefHeight="250.0" prefWidth="820.0" />
                                  </children>
                               </AnchorPane>
                           </content>
@@ -592,7 +592,7 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
                                  <children>
-                                    <VBox fx:id="sprinklerEastScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                    <VBox fx:id="sprinklerEastVBox" prefHeight="250.0" prefWidth="820.0" />
                                  </children>
                               </AnchorPane>
                           </content>
