@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" layoutX="-4.0" prefHeight="800.0" prefWidth="820.0">
+         <children>
+            <Pane prefHeight="50.0" prefWidth="820.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <HBox prefHeight="50.0" prefWidth="820.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" textAlignment="CENTER" wrappingWidth="130.8046875">
+                           <HBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="8:04:34" textAlignment="CENTER" wrappingWidth="130.8046875">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" textAlignment="CENTER" wrappingWidth="159.8046875">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="80.0" top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text fx:id="temperatureText" strokeType="OUTSIDE" strokeWidth="0.0" text="20" textAlignment="CENTER" wrappingWidth="97.8046875">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text fx:id="timeText11" strokeType="OUTSIDE" strokeWidth="0.0" text="C" wrappingWidth="26.8046875">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+            <Accordion prefHeight="225.0" prefWidth="820.0">
+              <panes>
+                <TitledPane animated="false" text="System Configuration">
+                     <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="220.0" prefWidth="200.0">
+                           <children>
+                              <HBox prefHeight="149.0" prefWidth="806.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Group" textAlignment="CENTER" wrappingWidth="94.6171875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location" textAlignment="CENTER" wrappingWidth="92.13671875" />
+                                          <ChoiceBox fx:id="systemConfigGroupChoiceBox" prefHeight="25.0" prefWidth="84.0">
+                                             <VBox.margin>
+                                                <Insets left="5.0" top="5.0" />
+                                             </VBox.margin>
+                                          </ChoiceBox>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="90.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <CheckBox fx:id="systemEnableCheckBox" mnemonicParsing="false" prefHeight="17.0" prefWidth="69.0" text="Enable" textAlignment="CENTER">
+                                             <VBox.margin>
+                                                <Insets left="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </CheckBox>
+                                          <Button fx:id="systemConfirmButton" mnemonicParsing="false" text="Confirm">
+                                             <VBox.margin>
+                                                <Insets left="15.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartMonChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndMonChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeMonChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tuesday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartTueChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndTueChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeTueChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartWedChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndWedChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeWedChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartTurChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndThuChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeThuChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Friday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartFriChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndFriChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeFriChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Saturday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartSatChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndSatChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeSatChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sunday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemStartSunChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemEndSunChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="systemVolumeSunChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                <TitledPane animated="false" text="Individual Configuration">
+                     <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="220.0" prefWidth="200.0">
+                           <children>
+                              <HBox prefHeight="149.0" prefWidth="806.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sprinkler" textAlignment="CENTER" wrappingWidth="94.6171875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" textAlignment="CENTER" wrappingWidth="92.13671875" />
+                                          <ChoiceBox fx:id="individualConfigIdChoiceBox" prefHeight="25.0" prefWidth="84.0">
+                                             <VBox.margin>
+                                                <Insets left="5.0" top="5.0" />
+                                             </VBox.margin>
+                                          </ChoiceBox>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="90.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <CheckBox fx:id="individualEnableCheckBox" mnemonicParsing="false" prefHeight="17.0" prefWidth="69.0" text="Enable" textAlignment="CENTER">
+                                             <VBox.margin>
+                                                <Insets left="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </CheckBox>
+                                          <Button fx:id="individualConfirmButton" mnemonicParsing="false" text="Confirm">
+                                             <VBox.margin>
+                                                <Insets left="15.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Button>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartMonChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndMonChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeMonChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tuesday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartTueChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndTueChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeTueChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartWedChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndWedChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeWedChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartTurChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndThuChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeThuChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Friday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartFriChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndFriChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeFriChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Saturday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartSatChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndSatChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeSatChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sunday" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="98.13671875" />
+                                          <Line startX="100.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualStartSunChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualEndSunChoiceBox" prefWidth="150.0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <ChoiceBox fx:id="individualVolumeSunChoiceBox" prefWidth="150.0" />
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+              </panes>
+               <effect>
+                  <DropShadow />
+               </effect>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Accordion>
+            <TabPane prefHeight="280.0" prefWidth="820.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab fx:id="tabNorth" text="North">
+                     <content>
+                        <ScrollPane prefHeight="231.0" prefWidth="343.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
+                                 <children>
+                                    <VBox fx:id="sprinklerNorthScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </content>
+                </Tab>
+                <Tab fx:id="tabSouth" text="South">
+                     <content>
+                        <ScrollPane prefHeight="231.0" prefWidth="343.0">
+                           <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
+                                 <children>
+                                    <VBox fx:id="sprinklerSouthScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </ScrollPane>
+                     </content>
+                </Tab>
+                  <Tab fx:id="tabWest" text="West">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
+                                 <children>
+                                    <VBox fx:id="sprinklerWestScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="tabEast" text="East">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="820.0">
+                                 <children>
+                                    <VBox fx:id="sprinklerEastScrollPane" prefHeight="250.0" prefWidth="820.0" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <HBox prefHeight="250.0">
+               <children>
+                  <BarChart fx:id="waterVolumeBarGraph" prefWidth="410.0">
+                    <xAxis>
+                      <CategoryAxis label="Month" tickLabelFill="#420eff" tickLength="12.0" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis label="Water Volume" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <Canvas fx:id="gardenMapCanvas" height="250.0" width="410.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>
