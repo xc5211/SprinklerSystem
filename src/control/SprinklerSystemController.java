@@ -8,16 +8,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -151,9 +157,16 @@ public class SprinklerSystemController implements Initializable {
 	private final static List<Integer> TIME_CHOICES = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 			15, 16, 17, 18, 19, 20, 21, 22, 23);
 	private final static List<Integer> VOLUME_CHOICES = Arrays.asList(0, 1, 2, 3, 4, 5);
+	private final static ObservableList<Integer> OBSERVABLE_TIME_CHOICES = FXCollections
+			.observableArrayList(TIME_CHOICES);
+	private final static ObservableList<Integer> OBSERVABLE_VOLUME_CHOICES = FXCollections
+			.observableArrayList(VOLUME_CHOICES);
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
-	private Map<Location, List<Sprinkler>> sprinklerMap;
+	private List<Sprinkler> sprinklers;
+	private Map<Sprinkler, Integer> userInterruptMap; // Saves Sprinkler/Time
+														// that's forced to be
+														// interrupted by user
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -161,7 +174,6 @@ public class SprinklerSystemController implements Initializable {
 		initGardenSprinklers();
 		initViews();
 		initListeners();
-		// TODO: more?
 	}
 
 	public void setStage(Stage stage) {
@@ -177,31 +189,44 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initGardenSprinklers() {
-		this.sprinklerMap = new HashMap<Location, List<Sprinkler>>();
+		this.sprinklers = new ArrayList<Sprinkler>();
+		this.userInterruptMap = new HashMap<Sprinkler, Integer>();
 
-		List<Sprinkler> list = new ArrayList<>();
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		this.sprinklerMap.put(Location.North, list);
+		Location location = Location.North;
+		int locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
 
-		list = new ArrayList<>();
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		this.sprinklerMap.put(Location.South, list);
+		location = Location.South;
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
 
-		list = new ArrayList<>();
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		this.sprinklerMap.put(Location.West, list);
+		location = Location.West;
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
 
-		list = new ArrayList<>();
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		list.add(new Sprinkler());
-		this.sprinklerMap.put(Location.East, list);
+		location = Location.East;
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
+		sprinklers.add(new Sprinkler(location, locationId));
 	}
 
 	private void initViews() {
@@ -216,152 +241,178 @@ public class SprinklerSystemController implements Initializable {
 		this.groupConfigGroupChoiceBox.setItems(FXCollections.observableArrayList(Location.values()));
 		this.groupConfigGroupChoiceBox.getSelectionModel().selectFirst();
 
-		this.groupStartTimeChoiceBoxMon.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxMon.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxMon.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxMon.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxMon.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxMon.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxMon.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxMon.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxMon.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxTue.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxTue.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxTue.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxTue.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxTue.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxTue.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxTue.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxTue.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxTue.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxWed.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxWed.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxWed.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxWed.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxWed.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxWed.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxWed.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxWed.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxWed.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxThu.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxThu.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxThu.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxThu.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxThu.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxThu.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxThu.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxThu.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxThu.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxFri.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxFri.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxFri.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxFri.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxFri.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxFri.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxFri.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxFri.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxFri.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxSat.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxSat.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxSat.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxSat.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxSat.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxSat.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxSat.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxSat.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxSat.getSelectionModel().select(1);
 
-		this.groupStartTimeChoiceBoxSun.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupStartTimeChoiceBoxSun.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupStartTimeChoiceBoxSun.getSelectionModel().select(8);
-		this.groupEndTimeChoiceBoxSun.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.groupEndTimeChoiceBoxSun.setItems(OBSERVABLE_TIME_CHOICES);
 		this.groupEndTimeChoiceBoxSun.getSelectionModel().select(8);
-		this.groupVolumeChoiceBoxSun.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.groupVolumeChoiceBoxSun.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.groupVolumeChoiceBoxSun.getSelectionModel().select(1);
 	}
 
 	private void initIndividualConfig() {
 		List<String> sprinklerIds = new ArrayList<>();
-		for (Map.Entry<Location, List<Sprinkler>> entry : this.sprinklerMap.entrySet()) {
-			for (Sprinkler sprinkler : entry.getValue()) {
-				sprinklerIds.add(sprinkler.getId());
-			}
+		for (Sprinkler sprinkler : sprinklers) {
+			sprinklerIds.add(sprinkler.getId());
 		}
-
 		this.individualConfigIdChoiceBox.setItems(FXCollections.observableArrayList(sprinklerIds));
 		this.individualConfigIdChoiceBox.getSelectionModel().selectFirst();
 
-		this.individualStartTimeChoiceBoxMon.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxMon.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxMon.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxMon.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxMon.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxMon.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxMon.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxMon.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxMon.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxTue.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxTue.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxTue.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxTue.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxTue.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxTue.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxTue.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxTue.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxTue.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxWed.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxWed.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxWed.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxWed.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxWed.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxWed.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxWed.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxWed.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxWed.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxThu.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxThu.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxThu.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxThu.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxThu.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxThu.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxThu.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxThu.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxThu.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxFri.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxFri.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxFri.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxFri.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxFri.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxFri.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxFri.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxFri.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxFri.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxSat.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxSat.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxSat.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxSat.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxSat.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxSat.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxSat.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxSat.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxSat.getSelectionModel().select(1);
 
-		this.individualStartTimeChoiceBoxSun.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualStartTimeChoiceBoxSun.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualStartTimeChoiceBoxSun.getSelectionModel().select(8);
-		this.individualEndTimeChoiceBoxSun.setItems(FXCollections.observableArrayList(TIME_CHOICES));
+		this.individualEndTimeChoiceBoxSun.setItems(OBSERVABLE_TIME_CHOICES);
 		this.individualEndTimeChoiceBoxSun.getSelectionModel().select(8);
-		this.individualVolumeChoiceBoxSun.setItems(FXCollections.observableArrayList(VOLUME_CHOICES));
+		this.individualVolumeChoiceBoxSun.setItems(OBSERVABLE_VOLUME_CHOICES);
 		this.individualVolumeChoiceBoxSun.getSelectionModel().select(1);
 	}
 
 	private void initSprinklerStatusScrollPane() {
-		initNorthSprinklers();
-		initSouthSprinklers();
-		initWestSprinklers();
-		initEastSprinklers();
-	}
+		for (Sprinkler sprinkler : sprinklers) {
+			HBox hBox = new HBox();
+			hBox.setAlignment(Pos.CENTER);
 
-	private void initNorthSprinklers() {
-		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.North);
-		// TODO: id
-		// TODO: status
-		// TODO: enable/disable for a period
-		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test1"));
-		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test2"));
-		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test3"));
-		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test4"));
-		this.sprinklerNorthVBox.getChildren().add(new Button("Button Test5"));
-	}
+			// Id label
+			Label idLabel = new Label(sprinkler.getId());
+			idLabel.setMinWidth(100);
+			idLabel.setAlignment(Pos.CENTER);
+			hBox.getChildren().add(idLabel);
 
-	private void initSouthSprinklers() {
-		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.South);
-		// TODO Auto-generated method stub
+			// Functional label
+			Label functionalLabel = new Label("Functional: ");
+			functionalLabel.setMinWidth(60);
+			functionalLabel.setAlignment(Pos.CENTER);
+			hBox.getChildren().add(functionalLabel);
+			// Functional status
+			CheckBox functionalCheckBox = new CheckBox();
+			functionalCheckBox.disableProperty().set(true);
+			functionalCheckBox.selectedProperty().bind(sprinkler.functionalProperty());
+			functionalCheckBox.setMinWidth(20);
+			hBox.getChildren().add(functionalCheckBox);
 
-	}
+			// On label
+			Label onLabel = new Label("On: ");
+			onLabel.setMinWidth(20);
+			onLabel.setAlignment(Pos.CENTER);
+			hBox.getChildren().add(onLabel);
+			// On Status
+			CheckBox onCheckBox = new CheckBox();
+			onCheckBox.disableProperty().set(true);
+			onCheckBox.selectedProperty().bind(sprinkler.onProperty());
+			onCheckBox.setMinWidth(20);
+			hBox.getChildren().add(onCheckBox);
 
-	private void initWestSprinklers() {
-		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.West);
-		// TODO Auto-generated method stub
+			// Force interrupt label
+			Label interruptLabel = new Label("Force interrupt:");
+			interruptLabel.setMinWidth(80);
+			interruptLabel.setAlignment(Pos.CENTER);
+			hBox.getChildren().add(interruptLabel);
+			// Force enable/disable for a period
+			Button forceInterruptButton = new Button();
+			forceInterruptButton.setText("" + sprinkler.isOn());
+			forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
+			forceInterruptButton.setMinWidth(20);
+			hBox.getChildren().add(forceInterruptButton);
 
-	}
-
-	private void initEastSprinklers() {
-		List<Sprinkler> sprinklers = this.sprinklerMap.get(Location.East);
-		// TODO Auto-generated method stub
-
+			switch (sprinkler.getLocation()) {
+			case North:
+				this.sprinklerNorthVBox.getChildren().add(hBox);
+				break;
+			case South:
+				this.sprinklerSouthVBox.getChildren().add(hBox);
+				break;
+			case West:
+				this.sprinklerWestVBox.getChildren().add(hBox);
+				break;
+			case East:
+				this.sprinklerEastVBox.getChildren().add(hBox);
+				break;
+			default:
+				assert false;
+			}
+		}
 	}
 
 	private void initVolumeBarChart() {
@@ -375,7 +426,23 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initListeners() {
-		// TODO need this?
+
+		timeTemperatureSimulator.getTimeStringProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				// TODO: check all Sprinkler start/end time
+				// TODO: check user forced interrupt timeout
+			}
+		});
+
+		timeTemperatureSimulator.getTemperatureProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				// TODO: check temperature limit for all Sprinkler
+			}
+		});
+
+		// TODO: add listener to update "user forced interrupt" state
 	}
 
 	// Event Listener on ChoiceBox[#groupConfigGroupChoiceBox].onMouseClicked

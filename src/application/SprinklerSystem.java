@@ -25,7 +25,7 @@ public class SprinklerSystem extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(APPLICATION_TITLE);
 			primaryStage.show();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -2,15 +2,15 @@ package model;
 
 public enum Location {
 
-	North(0), South(1), West(2), East(3);
+	North("N"), South("S"), West("W"), East("E");
 
-	private int val;
+	private String val;
 
-	Location(int val) {
+	Location(String val) {
 		this.val = val;
 	}
 
-	public int getVal() {
+	public String getVal() {
 		return this.val;
 	}
 }

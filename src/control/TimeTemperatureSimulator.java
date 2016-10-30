@@ -26,6 +26,7 @@ public class TimeTemperatureSimulator extends Thread {
 
 				timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));
 				temperatureProperty.set(String.format("%.2f", temperature++ % 100));
+
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
