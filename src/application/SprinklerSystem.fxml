@@ -23,13 +23,61 @@
                <children>
                   <HBox prefHeight="50.0" prefWidth="820.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" textAlignment="CENTER" wrappingWidth="130.8046875">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" textAlignment="CENTER" wrappingWidth="65.8046875">
                            <HBox.margin>
                               <Insets left="50.0" top="10.0" />
                            </HBox.margin>
                            <font>
                               <Font size="25.0" />
                            </font>
+                        </Text>
+                        <Text fx:id="yearText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="monthText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M" textAlignment="CENTER">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text fx:id="dayText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="D" textAlignment="CENTER">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" top="10.0" />
+                           </HBox.margin>
                         </Text>
                         <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="8:04:34" textAlignment="CENTER" wrappingWidth="130.8046875">
                            <font>
@@ -86,7 +134,7 @@
                                              </VBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location" textAlignment="CENTER" wrappingWidth="92.13671875" />
-                                          <ChoiceBox fx:id="groupConfigGroupChoiceBox" onMouseClicked="#selectSprinklerGroup" prefHeight="25.0" prefWidth="84.0">
+                                          <ChoiceBox fx:id="groupConfigGroupChoiceBox" prefHeight="25.0" prefWidth="84.0">
                                              <VBox.margin>
                                                 <Insets left="5.0" top="5.0" />
                                              </VBox.margin>
@@ -317,7 +365,7 @@
                                              </VBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" textAlignment="CENTER" wrappingWidth="92.13671875" />
-                                          <ChoiceBox fx:id="individualConfigIdChoiceBox" onMouseClicked="#selectSprinklerIndividual" prefHeight="25.0" prefWidth="84.0">
+                                          <ChoiceBox fx:id="individualConfigIdChoiceBox" prefHeight="25.0" prefWidth="84.0">
                                              <VBox.margin>
                                                 <Insets left="5.0" top="5.0" />
                                              </VBox.margin>
