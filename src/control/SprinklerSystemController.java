@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -451,6 +452,16 @@ public class SprinklerSystemController implements Initializable {
 	}
 
 	private void initListeners() {
+		initTimeTemperatureListener();
+		initGroupConfigListeners();
+		initIndividualConfigListeners();
+		// initSprinklerStatusScrollPaneListener();
+		// initVolumeBarChartListener();
+
+		// TODO: add listener to update "user forced interrupt" state
+	}
+
+	public void initTimeTemperatureListener() {
 
 		timeTemperatureSimulator.getTimeStringProperty().addListener(new InvalidationListener() {
 			@Override
@@ -468,10 +479,106 @@ public class SprinklerSystemController implements Initializable {
 				// TODO: check temperature limit for all Sprinkler
 			}
 		});
-
-		// TODO: add listener to update "user forced interrupt" state
 	}
 
+	public void initGroupConfigListeners() {
+
+		groupConfigGroupChoiceBox.getSelectionModel().selectedItemProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				boolean enabled = false;
+				switch (((ReadOnlyObjectProperty<Location>) observable).getValue()) {
+				case North:
+					enabled = sprinklerGroup[0].isEnabled();
+					break;
+				case South:
+					enabled = sprinklerGroup[1].isEnabled();
+					break;
+				case West:
+					enabled = sprinklerGroup[2].isEnabled();
+					break;
+				case East:
+					enabled = sprinklerGroup[3].isEnabled();
+					break;
+				default:
+					assert false;
+				}
+				groupEnableDisableCheckBox.setSelected(enabled);
+
+				groupStartTimeChoiceBoxMon.setDisable(enabled);
+				groupEndTimeChoiceBoxMon.setDisable(enabled);
+				groupVolumeChoiceBoxMon.setDisable(enabled);
+
+				groupStartTimeChoiceBoxTue.setDisable(enabled);
+				groupEndTimeChoiceBoxTue.setDisable(enabled);
+				groupVolumeChoiceBoxTue.setDisable(enabled);
+
+				groupStartTimeChoiceBoxWed.setDisable(enabled);
+				groupEndTimeChoiceBoxWed.setDisable(enabled);
+				groupVolumeChoiceBoxWed.setDisable(enabled);
+
+				groupStartTimeChoiceBoxThu.setDisable(enabled);
+				groupEndTimeChoiceBoxThu.setDisable(enabled);
+				groupVolumeChoiceBoxThu.setDisable(enabled);
+
+				groupStartTimeChoiceBoxFri.setDisable(enabled);
+				groupEndTimeChoiceBoxFri.setDisable(enabled);
+				groupVolumeChoiceBoxFri.setDisable(enabled);
+
+				groupStartTimeChoiceBoxSat.setDisable(enabled);
+				groupEndTimeChoiceBoxSat.setDisable(enabled);
+				groupVolumeChoiceBoxSat.setDisable(enabled);
+
+				groupStartTimeChoiceBoxSun.setDisable(enabled);
+				groupEndTimeChoiceBoxSun.setDisable(enabled);
+				groupVolumeChoiceBoxSun.setDisable(enabled);
+			}
+		});
+	}
+
+	public void initIndividualConfigListeners() {
+
+		individualConfigIdChoiceBox.getSelectionModel().selectedItemProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				String id = ((ReadOnlyObjectProperty<String>) observable).getValue();
+				Sprinkler targetSprinkler = getSprinkler(id);
+				boolean enabled = targetSprinkler.isFunctional();
+
+				individualEnableCheckBox.setSelected(enabled);
+
+				individualStartTimeChoiceBoxMon.setDisable(enabled);
+				individualEndTimeChoiceBoxMon.setDisable(enabled);
+				individualVolumeChoiceBoxMon.setDisable(enabled);
+
+				individualStartTimeChoiceBoxTue.setDisable(enabled);
+				individualEndTimeChoiceBoxTue.setDisable(enabled);
+				individualVolumeChoiceBoxTue.setDisable(enabled);
+
+				individualStartTimeChoiceBoxWed.setDisable(enabled);
+				individualEndTimeChoiceBoxWed.setDisable(enabled);
+				individualVolumeChoiceBoxWed.setDisable(enabled);
+
+				individualStartTimeChoiceBoxThu.setDisable(enabled);
+				individualEndTimeChoiceBoxThu.setDisable(enabled);
+				individualVolumeChoiceBoxThu.setDisable(enabled);
+
+				individualStartTimeChoiceBoxFri.setDisable(enabled);
+				individualEndTimeChoiceBoxFri.setDisable(enabled);
+				individualVolumeChoiceBoxFri.setDisable(enabled);
+
+				individualStartTimeChoiceBoxSat.setDisable(enabled);
+				individualEndTimeChoiceBoxSat.setDisable(enabled);
+				individualVolumeChoiceBoxSat.setDisable(enabled);
+
+				individualStartTimeChoiceBoxSun.setDisable(enabled);
+				individualEndTimeChoiceBoxSun.setDisable(enabled);
+				individualVolumeChoiceBoxSun.setDisable(enabled);
+			}
+		});
+	}
+
+	// TODO: Remove this method
 	// Event Listener on ChoiceBox[#groupConfigGroupChoiceBox].onMouseClicked
 	@FXML
 	public void selectSprinklerGroup(MouseEvent event) {
@@ -483,7 +590,29 @@ public class SprinklerSystemController implements Initializable {
 	public void enableOrDisableGroupConfiguration(MouseEvent event) {
 		// TODO: start recording water volume
 
+		// Get target sprinkler group
+		Location location = groupConfigGroupChoiceBox.getSelectionModel().selectedItemProperty().getValue();
+		SprinklerGroup sprinklerGroup = null;
+		switch (location) {
+		case North:
+			sprinklerGroup = this.sprinklerGroup[0];
+			break;
+		case South:
+			sprinklerGroup = this.sprinklerGroup[1];
+			break;
+		case West:
+			sprinklerGroup = this.sprinklerGroup[2];
+			break;
+		case East:
+			sprinklerGroup = this.sprinklerGroup[3];
+			break;
+		default:
+			assert false;
+		}
+
 		if (groupEnableDisableCheckBox.isSelected()) {
+			sprinklerGroup.setEnabled(true);
+
 			this.groupStartTimeChoiceBoxMon.setDisable(true);
 			this.groupEndTimeChoiceBoxMon.setDisable(true);
 			this.groupVolumeChoiceBoxMon.setDisable(true);
@@ -512,6 +641,8 @@ public class SprinklerSystemController implements Initializable {
 			this.groupEndTimeChoiceBoxSun.setDisable(true);
 			this.groupVolumeChoiceBoxSun.setDisable(true);
 		} else {
+			sprinklerGroup.setEnabled(false);
+
 			this.groupStartTimeChoiceBoxMon.setDisable(false);
 			this.groupEndTimeChoiceBoxMon.setDisable(false);
 			this.groupVolumeChoiceBoxMon.setDisable(false);
@@ -674,6 +805,7 @@ public class SprinklerSystemController implements Initializable {
 		// TODO Autogenerated
 	}
 
+	// TODO: Remove this method
 	// Event Listener on ChoiceBox[#individualConfigIdChoiceBox].onMouseClicked
 	@FXML
 	public void selectSprinklerIndividual(MouseEvent event) {
@@ -685,7 +817,11 @@ public class SprinklerSystemController implements Initializable {
 	public void enableOrDisableIndividualConfiguration(MouseEvent event) {
 		// TODO: start recording water volume
 
+		String id = this.individualConfigIdChoiceBox.selectionModelProperty().getValue().getSelectedItem();
+		Sprinkler targetSprinkler = getSprinkler(id);
 		if (this.individualEnableCheckBox.isSelected()) {
+			targetSprinkler.enableByUser();
+
 			this.individualStartTimeChoiceBoxMon.setDisable(true);
 			this.individualEndTimeChoiceBoxMon.setDisable(true);
 			this.individualVolumeChoiceBoxMon.setDisable(true);
@@ -714,6 +850,8 @@ public class SprinklerSystemController implements Initializable {
 			this.individualEndTimeChoiceBoxSun.setDisable(true);
 			this.individualVolumeChoiceBoxSun.setDisable(true);
 		} else {
+			targetSprinkler.disableByUser();
+
 			this.individualStartTimeChoiceBoxMon.setDisable(false);
 			this.individualEndTimeChoiceBoxMon.setDisable(false);
 			this.individualVolumeChoiceBoxMon.setDisable(false);
@@ -888,5 +1026,16 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	public void selectIndividualVolumeSun(MouseEvent event) {
 		// TODO Autogenerated
+	}
+
+	private Sprinkler getSprinkler(String id) {
+		for (SprinklerGroup sg : sprinklerGroup) {
+			for (Sprinkler sprinkler : sg.getSprinklers()) {
+				if (sprinkler.getId().equals(id)) {
+					return sprinkler;
+				}
+			}
+		}
+		return null;
 	}
 }
