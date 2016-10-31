@@ -614,6 +614,9 @@ public class SprinklerSystemController implements Initializable {
 
 		if (groupEnableDisableCheckBox.isSelected()) {
 			sprinklerGroup.setEnabled(true);
+			for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
+				sprinkler.enableByUser();
+			}
 
 			this.groupStartTimeChoiceBoxMon.setDisable(true);
 			this.groupEndTimeChoiceBoxMon.setDisable(true);
@@ -644,6 +647,9 @@ public class SprinklerSystemController implements Initializable {
 			this.groupVolumeChoiceBoxSun.setDisable(true);
 		} else {
 			sprinklerGroup.setEnabled(false);
+			for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
+				sprinkler.disableByUser();
+			}
 
 			this.groupStartTimeChoiceBoxMon.setDisable(false);
 			this.groupEndTimeChoiceBoxMon.setDisable(false);

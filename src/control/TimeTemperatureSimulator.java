@@ -33,7 +33,8 @@ public class TimeTemperatureSimulator extends Thread {
 					this.dayProperty.set("" + day);
 				}
 				if (day == 30) {
-					month = 0;
+					day = 0;
+					month++;
 					this.monthProperty.set("" + month);
 				}
 				if (month == 12) {
