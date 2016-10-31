@@ -13,8 +13,11 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.BarChart;
@@ -386,6 +389,7 @@ public class SprinklerSystemController implements Initializable {
 		for (SprinklerGroup sg : sprinklerGroup) {
 			for (Sprinkler sprinkler : sg.getSprinklers()) {
 				HBox hBox = new HBox();
+				hBox.setPadding(new Insets(5, 5, 5, 5));
 				hBox.setAlignment(Pos.CENTER);
 
 				// Id label
@@ -428,6 +432,11 @@ public class SprinklerSystemController implements Initializable {
 				forceInterruptButton.setText("" + sprinkler.isOn());
 				forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
 				forceInterruptButton.setMinWidth(20);
+				forceInterruptButton.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						// TODO enable/disable sprinkler
+					}
+				});
 				hBox.getChildren().add(forceInterruptButton);
 
 				switch (sprinkler.getLocation()) {

@@ -32,7 +32,7 @@ public class Sprinkler implements Interruptable {
 
 		this.functionalProperty = new SimpleBooleanProperty(false);
 		this.onProperty = new SimpleBooleanProperty(false);
-		this.forceInterruptProperty = new SimpleStringProperty("Enable");
+		this.forceInterruptProperty = new SimpleStringProperty(" Enable");
 	}
 
 	public String getId() {
@@ -96,7 +96,7 @@ public class Sprinkler implements Interruptable {
 
 		this.functionalProperty.set(false);
 		this.onProperty.set(false);
-		this.forceInterruptProperty.set("Enable");
+		this.forceInterruptProperty.set(" Enable");
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class Sprinkler implements Interruptable {
 
 		this.functionalProperty.set(true);
 		this.onProperty.set(false);
-		this.forceInterruptProperty.set("Enable");
+		this.forceInterruptProperty.set(" Enable");
 	}
 
 	@Override
