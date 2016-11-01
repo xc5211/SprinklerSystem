@@ -29,18 +29,16 @@ public class TimeTemperatureSimulator extends Thread {
 				}
 				if (hour == 24) {
 					hour = 0;
-					day++;
+					if (day++ == 30) {
+						day = 0;
+						if (month++ == 12) {
+							month = 0;
+							year++;
+							this.yearProperty.set("" + year);
+						}
+						this.monthProperty.set("" + month);
+					}
 					this.dayProperty.set("" + day);
-				}
-				if (day == 30) {
-					day = 0;
-					month++;
-					this.monthProperty.set("" + month);
-				}
-				if (month == 12) {
-					month = 0;
-					year++;
-					this.yearProperty.set("" + year);
 				}
 
 				timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));

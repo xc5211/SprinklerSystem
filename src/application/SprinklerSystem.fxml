@@ -651,7 +651,7 @@
             </TabPane>
             <HBox prefHeight="250.0">
                <children>
-                  <BarChart fx:id="waterVolumeBarGraph" prefWidth="410.0">
+                  <BarChart fx:id="waterVolumeBarChart" prefWidth="410.0">
                     <xAxis>
                       <CategoryAxis label="Month" tickLabelFill="#420eff" tickLength="12.0" />
                     </xAxis>
