@@ -130,7 +130,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Group" textAlignment="CENTER" wrappingWidth="94.6171875">
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets top="20.0" />
                                              </VBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location" textAlignment="CENTER" wrappingWidth="92.13671875" />
@@ -141,7 +141,7 @@
                                           </ChoiceBox>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="90.13671875">
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets top="20.0" />
                                              </VBox.margin>
                                           </Text>
                                           <CheckBox fx:id="groupEnableDisableCheckBox" mnemonicParsing="false" onMouseClicked="#enableOrDisableGroupConfiguration" prefHeight="17.0" prefWidth="69.0" text="Enable" textAlignment="CENTER">
@@ -149,11 +149,6 @@
                                                 <Insets left="10.0" top="5.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <Button fx:id="groupConfirmButton" mnemonicParsing="false" onMouseClicked="#applyGroupConfiguration" text="Confirm">
-                                             <VBox.margin>
-                                                <Insets left="15.0" top="10.0" />
-                                             </VBox.margin>
-                                          </Button>
                                        </children>
                                     </VBox>
                                     <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black;">
@@ -361,7 +356,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sprinkler" textAlignment="CENTER" wrappingWidth="94.6171875">
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets top="20.0" />
                                              </VBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" textAlignment="CENTER" wrappingWidth="92.13671875" />
@@ -372,7 +367,7 @@
                                           </ChoiceBox>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="90.13671875">
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets top="20.0" />
                                              </VBox.margin>
                                           </Text>
                                           <CheckBox fx:id="individualEnableCheckBox" mnemonicParsing="false" onMouseClicked="#enableOrDisableIndividualConfiguration" prefHeight="17.0" prefWidth="69.0" text="Enable" textAlignment="CENTER">
@@ -380,11 +375,6 @@
                                                 <Insets left="10.0" top="5.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <Button fx:id="individualConfirmButton" mnemonicParsing="false" onMouseClicked="#applyIndividualConfiguration" text="Confirm">
-                                             <VBox.margin>
-                                                <Insets left="15.0" top="10.0" />
-                                             </VBox.margin>
-                                          </Button>
                                        </children>
                                        <opaqueInsets>
                                           <Insets />

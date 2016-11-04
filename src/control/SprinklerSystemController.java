@@ -51,8 +51,6 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	private CheckBox groupEnableDisableCheckBox;
 	@FXML
-	private Button groupConfirmButton;
-	@FXML
 	private ChoiceBox<Integer> groupStartTimeChoiceBoxMon;
 	@FXML
 	private ChoiceBox<Integer> groupEndTimeChoiceBoxMon;
@@ -98,8 +96,6 @@ public class SprinklerSystemController implements Initializable {
 	private ChoiceBox<String> individualConfigIdChoiceBox;
 	@FXML
 	private CheckBox individualEnableCheckBox;
-	@FXML
-	private Button individualConfirmButton;
 	@FXML
 	private ChoiceBox<Integer> individualStartTimeChoiceBoxMon;
 	@FXML
@@ -217,45 +213,45 @@ public class SprinklerSystemController implements Initializable {
 		Location location = Location.North;
 		int locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		List<Sprinkler> sprinklers = new ArrayList<Sprinkler>();
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		sprinklerGroup[0] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.South;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, false));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, false));
 		sprinklerGroup[1] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.West;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, false));
 		sprinklerGroup[2] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.East;
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, false));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
-		sprinklers.add(new Sprinkler(location, locationId));
+		sprinklers.add(new Sprinkler(location, locationId, true));
 		sprinklerGroup[3] = new SprinklerGroup(location, sprinklers);
 	}
 
@@ -263,8 +259,7 @@ public class SprinklerSystemController implements Initializable {
 		initTimeTemperature();
 		initGroupConfig();
 		initIndividualConfig();
-		initSprinklerStatusScrollPane();
-		initVolumeBarChart();
+		initSprinklerStatusVBoxPane();
 		initGardenCanvas();
 	}
 
@@ -390,7 +385,7 @@ public class SprinklerSystemController implements Initializable {
 		this.individualVolumeChoiceBoxSun.getSelectionModel().select(1);
 	}
 
-	private void initSprinklerStatusScrollPane() {
+	private void initSprinklerStatusVBoxPane() {
 		for (SprinklerGroup sg : sprinklerGroup) {
 			for (Sprinkler sprinkler : sg.getSprinklers()) {
 				HBox hBox = new HBox();
@@ -436,6 +431,7 @@ public class SprinklerSystemController implements Initializable {
 				Button forceInterruptButton = new Button();
 				forceInterruptButton.setText("" + sprinkler.isOn());
 				forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
+				forceInterruptButton.disableProperty().bind(sprinkler.enableProperty());
 				forceInterruptButton.setMinWidth(20);
 				forceInterruptButton.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
@@ -464,10 +460,6 @@ public class SprinklerSystemController implements Initializable {
 		}
 	}
 
-	private void initVolumeBarChart() {
-		// Nothing to init
-	}
-
 	private void initGardenCanvas() {
 		// TODO Draw garden sprinklers based on "sprinklerGroup" map
 
@@ -477,10 +469,6 @@ public class SprinklerSystemController implements Initializable {
 		initTimeTemperatureListener();
 		initGroupConfigListeners();
 		initIndividualConfigListeners();
-		// initSprinklerStatusScrollPaneListener();
-		// initVolumeBarChartListener();
-
-		// TODO: add listener to update "user forced interrupt" state
 	}
 
 	public void initTimeTemperatureListener() {
@@ -565,8 +553,10 @@ public class SprinklerSystemController implements Initializable {
 			public void invalidated(Observable observable) {
 				String id = ((ReadOnlyObjectProperty<String>) observable).getValue();
 				Sprinkler targetSprinkler = getSprinkler(id);
-				boolean enabled = targetSprinkler.isFunctional();
+				boolean enabled = targetSprinkler.isOn();
+				boolean functional = targetSprinkler.isFunctional();
 
+				individualEnableCheckBox.setDisable(!functional);
 				individualEnableCheckBox.setSelected(enabled);
 
 				individualStartTimeChoiceBoxMon.setDisable(enabled);
@@ -692,12 +682,6 @@ public class SprinklerSystemController implements Initializable {
 			this.groupEndTimeChoiceBoxSun.setDisable(false);
 			this.groupVolumeChoiceBoxSun.setDisable(false);
 		}
-	}
-
-	// Event Listener on Button[#groupConfirmButton].onMouseClicked
-	@FXML
-	public void applyGroupConfiguration(MouseEvent event) {
-		// TODO Autogenerated
 	}
 
 	// Event Listener on ChoiceBox[#groupStartTimeChoiceBoxMon].onMouseClicked
@@ -894,12 +878,6 @@ public class SprinklerSystemController implements Initializable {
 			this.individualEndTimeChoiceBoxSun.setDisable(false);
 			this.individualVolumeChoiceBoxSun.setDisable(false);
 		}
-	}
-
-	// Event Listener on Button[#individualConfirmButton].onMouseClicked
-	@FXML
-	public void applyIndividualConfiguration(MouseEvent event) {
-		// TODO Autogenerated
 	}
 
 	// Event Listener on
