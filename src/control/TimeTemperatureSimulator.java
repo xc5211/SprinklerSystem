@@ -1,7 +1,9 @@
 package control;
 
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
 
 public class TimeTemperatureSimulator extends Thread {
 
@@ -43,17 +45,33 @@ public class TimeTemperatureSimulator extends Thread {
 
 				timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));
 
-				// TODO: figure out temperature vs time equation
-				// if(clock.minuteSum() >= 0 && clock.minuteSum() < 360){
-				// temperature = (float) (55.0 - (float)clock.minuteSum()/24.0);
-				// }
-				// if(clock.minuteSum() >= 360 && clock.minuteSum() < 840){
-				// temperature = (float) (10.0 + (float)clock.minuteSum()/12.0);
-				// }
-				// if(clock.minuteSum() >= 840 && clock.minuteSum() < 1440){
-				// temperature = (float) (115.0- (float)clock.minuteSum()/24.0);
-				// }
-				temperatureProperty.set(String.format("%.2f", temperature++ % 100));
+                // temperature has to be both 55 and 90 in a day(hour changes from 0~24)
+				if(hour >= 0 && hour < 12){
+					if(temperature > 96 ){
+						temperature = (temperature - 0.1) ;
+					} else if(temperature < 30){
+						temperature = (temperature + 1) ;
+					}
+					else if(temperature < 90){
+						temperature = (temperature + 0.6) ;
+					} else {
+					    temperature = (temperature+0.1) ;
+					}
+					
+				} else if(hour >= 12 && hour < 24){
+					if(temperature > 96){
+						temperature = (temperature - 1) ;
+					} else if(temperature < 30){
+						temperature = (temperature + 1.2) ;
+					}
+					if(temperature > 55){
+						temperature = (temperature - 0.5) ;
+					} else{
+					    temperature = (temperature- 0.2) ;
+					}
+
+				}
+				temperatureProperty.set(String.format("%.2f", temperature % 100));
 
 				Thread.sleep(80);
 			} catch (InterruptedException e) {
@@ -105,4 +123,5 @@ public class TimeTemperatureSimulator extends Thread {
 	public StringProperty temperatureProperty() {
 		return this.temperatureProperty;
 	}
+
 }
