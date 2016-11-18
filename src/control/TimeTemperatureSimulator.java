@@ -1,9 +1,7 @@
 package control;
 
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 
 public class TimeTemperatureSimulator extends Thread {
 
@@ -44,40 +42,42 @@ public class TimeTemperatureSimulator extends Thread {
 				}
 
 				timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));
-
-                // temperature has to be both 55 and 90 in a day(hour changes from 0~24)
-				if(hour >= 0 && hour < 12){
-					if(temperature > 96 ){
-						temperature = (temperature - 0.1) ;
-					} else if(temperature < 30){
-						temperature = (temperature + 1) ;
-					}
-					else if(temperature < 90){
-						temperature = (temperature + 0.6) ;
-					} else {
-					    temperature = (temperature+0.1) ;
-					}
-					
-				} else if(hour >= 12 && hour < 24){
-					if(temperature > 96){
-						temperature = (temperature - 1) ;
-					} else if(temperature < 30){
-						temperature = (temperature + 1.2) ;
-					}
-					if(temperature > 55){
-						temperature = (temperature - 0.5) ;
-					} else{
-					    temperature = (temperature- 0.2) ;
-					}
-
-				}
-				temperatureProperty.set(String.format("%.2f", temperature % 100));
+				temperature = simulateCurrentTemperature(temperature);
+				temperatureProperty.set(String.format("%.2f", temperature));
 
 				Thread.sleep(80);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	// temperature has to be both 55 and 90 in a day(hour changes from 0~24)
+	private double simulateCurrentTemperature(double previousTemp) {
+		double temperature = previousTemp;
+		if (hour >= 0 && hour < 12) {
+			if (temperature > 96) {
+				temperature = (temperature - 0.1);
+			} else if (temperature < 30) {
+				temperature = (temperature + 1);
+			} else if (temperature < 90) {
+				temperature = (temperature + 0.6);
+			} else {
+				temperature = (temperature + 0.1);
+			}
+		} else if (hour >= 12 && hour < 24) {
+			if (temperature > 96) {
+				temperature = (temperature - 1);
+			} else if (temperature < 30) {
+				temperature = (temperature + 1.2);
+			}
+			if (temperature > 55) {
+				temperature = (temperature - 0.5);
+			} else {
+				temperature = (temperature - 0.2);
+			}
+		}
+		return temperature;
 	}
 
 	public int getHour() {
