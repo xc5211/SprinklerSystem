@@ -38,7 +38,7 @@ public class WaterConsumptionSimulator extends Thread {
 		int currentMonthConsumption = 0;
 
 		while (true) {
-			int totalVolumePerHour = this.locationWaterConsumption.getTotalVolumePerHour();
+			int totalVolumePerHour = this.locationWaterConsumption.getVolumePerHourTotal();
 			if (totalVolumePerHour == 0) {
 				continue;
 			}
@@ -88,6 +88,27 @@ public class WaterConsumptionSimulator extends Thread {
 		if (volumePerHour != 0) {
 			prevMin = this.timeTemperatureSimulator.getMinute();
 		}
+	}
+
+	public int getVolumePerHour(Location location) {
+		int volumePerHour = 0;
+		switch (location) {
+		case North:
+			volumePerHour = locationWaterConsumption.getVolumePerHourNorth();
+			break;
+		case South:
+			volumePerHour = locationWaterConsumption.getVolumePerHourSouth();
+			break;
+		case West:
+			volumePerHour = locationWaterConsumption.getVolumePerHourWest();
+			break;
+		case East:
+			volumePerHour = locationWaterConsumption.getVolumePerHourEast();
+			break;
+		default:
+			assert false;
+		}
+		return volumePerHour;
 	}
 
 	public IntegerProperty[] monthlyConsumption() {

@@ -32,7 +32,24 @@ public class LocationWaterConsumption {
 		this.volumePerHourEast = volumePerHour;
 	}
 
-	public int getTotalVolumePerHour() {
-		return this.volumePerHourTotal;
+	public int getVolumePerHourTotal() {
+		return volumePerHourTotal;
 	}
+
+	public int getVolumePerHourNorth() {
+		return volumePerHourNorth;
+	}
+
+	public int getVolumePerHourSouth() {
+		return volumePerHourSouth;
+	}
+
+	public int getVolumePerHourWest() {
+		return volumePerHourWest;
+	}
+
+	public int getVolumePerHourEast() {
+		return volumePerHourEast;
+	}
+
 }
