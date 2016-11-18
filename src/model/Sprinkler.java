@@ -12,9 +12,10 @@ public class Sprinkler implements Interruptable {
 	private Schedule groupSchedule;
 	private Schedule individualSchedule;
 	private boolean functional;
-	private boolean on;
-	private boolean systemInterrupted;
-	private boolean userInterrupted;
+	private boolean onGroup;
+	private boolean onIndividual;
+	private boolean onTemperatureInterrupted;
+	private boolean onUserInterrupted;
 
 	private BooleanProperty functionalProperty;
 	private BooleanProperty enableProperty;
@@ -27,9 +28,10 @@ public class Sprinkler implements Interruptable {
 		this.groupSchedule = new Schedule();
 		this.individualSchedule = new Schedule();
 		this.functional = functional;
-		this.on = false;
-		this.systemInterrupted = false;
-		this.userInterrupted = false;
+		this.onGroup = false;
+		this.onIndividual = false;
+		this.onTemperatureInterrupted = false;
+		this.onUserInterrupted = false;
 
 		this.functionalProperty = new SimpleBooleanProperty(functional);
 		this.enableProperty = new SimpleBooleanProperty(!functional);
@@ -57,22 +59,26 @@ public class Sprinkler implements Interruptable {
 		return this.functional;
 	}
 
-	public boolean isOn() {
-		return this.on;
+	public boolean isOnGroup() {
+		return this.onGroup;
+	}
+
+	public boolean isOnIndividual() {
+		return this.onIndividual;
 	}
 
 	public boolean isSystemInterrupted() {
-		return this.systemInterrupted;
+		return this.onTemperatureInterrupted;
 	}
 
 	public boolean isUserInterrupted() {
-		return this.userInterrupted;
+		return this.onUserInterrupted;
 	}
 
 	public BooleanProperty functionalProperty() {
 		return this.functionalProperty;
 	}
-	
+
 	public BooleanProperty enableProperty() {
 		return this.enableProperty;
 	}
@@ -90,7 +96,7 @@ public class Sprinkler implements Interruptable {
 		if (!isFunctional()) {
 			return;
 		}
-		this.on = true;
+		this.onTemperatureInterrupted = true;
 
 		this.onProperty.set(true);
 		this.forceInterruptProperty.set("Disable");
@@ -101,29 +107,76 @@ public class Sprinkler implements Interruptable {
 		if (!isFunctional()) {
 			return;
 		}
-		this.on = false;
+		this.onTemperatureInterrupted = false;
+
+		this.onProperty.set(false);
+		this.forceInterruptProperty.set(" Enable");
+	}
+
+	@Deprecated
+	@Override
+	public void enableByUser() {
+		if (!isFunctional()) {
+			return;
+		}
+		this.onGroup = true;
+
+		this.onProperty.set(true);
+		this.forceInterruptProperty.set("Disable");
+	}
+
+	@Deprecated
+	@Override
+	public void disableByUser() {
+		if (!isFunctional()) {
+			return;
+		}
+		this.onGroup = false;
 
 		this.onProperty.set(false);
 		this.forceInterruptProperty.set(" Enable");
 	}
 
 	@Override
-	public void enableByUser() {
+	public void enableByUserGroup() {
 		if (!isFunctional()) {
 			return;
 		}
-		this.on = true;
+		this.onGroup = true;
 
 		this.onProperty.set(true);
 		this.forceInterruptProperty.set("Disable");
 	}
 
 	@Override
-	public void disableByUser() {
+	public void disableByUserGroup() {
 		if (!isFunctional()) {
 			return;
 		}
-		this.on = false;
+		this.onGroup = false;
+
+		this.onProperty.set(false);
+		this.forceInterruptProperty.set(" Enable");
+
+	}
+
+	@Override
+	public void enableByUserIndividual() {
+		if (!isFunctional()) {
+			return;
+		}
+		this.onIndividual = true;
+
+		this.onProperty.set(true);
+		this.forceInterruptProperty.set("Disable");
+	}
+
+	@Override
+	public void disableByUserIndividual() {
+		if (!isFunctional()) {
+			return;
+		}
+		this.onIndividual = false;
 
 		this.onProperty.set(false);
 		this.forceInterruptProperty.set(" Enable");
@@ -138,4 +191,5 @@ public class Sprinkler implements Interruptable {
 	public void setIndividualSchedule(Schedule schedule) {
 		this.individualSchedule = schedule;
 	}
+
 }
