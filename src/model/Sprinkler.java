@@ -98,8 +98,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onTemperatureInterrupted = true;
 
-		this.onProperty.set(true);
-		this.forceInterruptProperty.set("Disable");
+		this.setUserInterfaceProperties();
 	}
 
 	@Override
@@ -109,8 +108,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onTemperatureInterrupted = false;
 
-		this.onProperty.set(false);
-		this.forceInterruptProperty.set(" Enable");
+		this.setUserInterfaceProperties();
 	}
 
 	@Deprecated
@@ -144,8 +142,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onGroup = true;
 
-		this.onProperty.set(true);
-		this.forceInterruptProperty.set("Disable");
+		this.setUserInterfaceProperties();
 	}
 
 	@Override
@@ -155,8 +152,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onGroup = false;
 
-		this.onProperty.set(false);
-		this.forceInterruptProperty.set(" Enable");
+		this.setUserInterfaceProperties();
 
 	}
 
@@ -167,8 +163,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onIndividual = true;
 
-		this.onProperty.set(true);
-		this.forceInterruptProperty.set("Disable");
+		this.setUserInterfaceProperties();
 	}
 
 	@Override
@@ -178,8 +173,7 @@ public class Sprinkler implements Interruptable {
 		}
 		this.onIndividual = false;
 
-		this.onProperty.set(false);
-		this.forceInterruptProperty.set(" Enable");
+		this.setUserInterfaceProperties();
 	}
 
 	@Override
@@ -192,4 +186,13 @@ public class Sprinkler implements Interruptable {
 		this.individualSchedule = schedule;
 	}
 
+	private void setUserInterfaceProperties(){		
+		if(this.onTemperatureInterrupted || this.onGroup || this.onIndividual){
+			this.onProperty.set(true);
+			this.forceInterruptProperty.set("Disable");
+		} else {
+			this.onProperty.set(false);
+			this.forceInterruptProperty.set(" Enable");
+		}
+	}
 }

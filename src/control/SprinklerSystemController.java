@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.geom.Point2D;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -19,7 +21,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -29,6 +34,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Location;
@@ -158,6 +166,9 @@ public class SprinklerSystemController implements Initializable {
 	private BarChart<Integer, Integer> waterVolumeBarChart;
 	@FXML
 	private Canvas gardenMapCanvas;
+	
+	private GraphicsContext gc;
+
 
 	private Stage stage;
 
@@ -171,6 +182,7 @@ public class SprinklerSystemController implements Initializable {
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
 	private WaterConsumptionSimulator waterConsumptionSimulator;
+	private SprinklerController sprinklerController;
 	private SprinklerGroup[] sprinklerGroup;
 	private Map<Integer, Integer> waterConsumptionMap; // Keep track of
 														// month/volume water
@@ -184,6 +196,7 @@ public class SprinklerSystemController implements Initializable {
 		initTimeTemperatureSimulator();
 		initWaterConsumptionSimulator();
 		initGardenSprinklers();
+		initSprinklerController();
 		initViews();
 		initListeners();
 	}
@@ -202,6 +215,12 @@ public class SprinklerSystemController implements Initializable {
 		this.waterConsumptionSimulator = new WaterConsumptionSimulator(this.timeTemperatureSimulator);
 		this.waterConsumptionSimulator.setBarChart(waterVolumeBarChart);
 		this.waterConsumptionSimulator.start();
+		waitForThreadToStart(500);
+	}
+	
+	private void initSprinklerController(){
+		this.sprinklerController = new SprinklerController(timeTemperatureSimulator, waterConsumptionSimulator, sprinklerGroup);
+		this.sprinklerController.start();
 		waitForThreadToStart(500);
 	}
 
@@ -429,7 +448,7 @@ public class SprinklerSystemController implements Initializable {
 				hBox.getChildren().add(interruptLabel);
 				// Force enable/disable for a period
 				Button forceInterruptButton = new Button();
-				forceInterruptButton.setText("" + sprinkler.isOn());
+				forceInterruptButton.setText(" Enable");
 				forceInterruptButton.textProperty().bind(sprinkler.forceInterruptProperty());
 				forceInterruptButton.disableProperty().bind(sprinkler.enableProperty());
 				forceInterruptButton.setMinWidth(20);
@@ -463,7 +482,180 @@ public class SprinklerSystemController implements Initializable {
 	private void initGardenCanvas() {
 		// TODO Draw garden sprinklers based on "sprinklerGroup" map
 
+		
+		int size = 16;
+	
+		gc = gardenMapCanvas.getGraphicsContext2D();
+		gc.setFill(Color.GREEN);
+		gc.setStroke(Color.BLUE);
+        gc.setLineWidth(3);
+        gc.strokeLine(0, 0, 410, 250);
+        gc.strokeLine(0, 250, 410, 0);
+        
+        // Start point of the Oval(Sprinkler) for every new iteration(change line)
+        double start_x = 148.5; //For biggest Oval. Only one Oval.
+        double start_y = 0;
+        
+        // Starting boundary, the middle point of the canvas
+        double boundary_x = 205;
+        double boundary_y = 125;
+        
+        // Location of every Oval(Sprinkler)
+        double x = 148.5;  //7.0 is for (2,2). +50  If the oval is (30, 30)
+        double y = 0;
+        
+        // Size of the Oval(Sprinkler). Changeable. 
+        double width = 113;
+        double height = 113;
+        
+        int count = 0;
+ 
+        double move_x = 20;
+        double move_y = 20;
+        
+        double start_move_x = 15;
+        
+        double next_x = 70;
+        switch(size){
+            case 1: start_move_x = 0;                   
+            	    break;
+            case 2: width = width - size*20;
+                    height = height - size*20;
+                    move_x += 25;
+                    move_y -= 25;
+                    next_x += 50;
+                    break;
+           
+            case 3: width = width - size*15;
+                    height = height - size*15;
+                    move_x += 5;
+                    move_y -= 5;
+                    next_x += 60;
+                    break;
+            case 4: width = width - size*15;
+                    height = height - size*15;
+                    move_x -= 5;
+                    move_y -= 10;
+                    next_x += 30;
+                    break;
+            case 5:  width = width - size*13;
+                     height = height - size*13;
+                     move_x -= 10;
+                     move_y -= 15;
+                     next_x += 45;
+                     break;
+            case 6:  width = width - size*10.5;
+                     height = height - size*10.5;
+                     move_x -= 10;
+                     move_y -= 15;
+                     next_x += 40;
+                     break;
+            case 7:  width = width - size*10.5;
+                     height = height - size*10.5;
+                     start_move_x -= 2;
+                     move_x -= 11.5;
+                     move_y -= 14.5;
+                     next_x += 10;
+                     break;
+            case 8:  width = width - size*9;
+                     height = height - size*9;
+                     start_move_x -= 4;
+                     move_x -= 13.5;
+                     move_y -= 16.5;
+                     next_x += 11;
+                     break;
+            case 9:  width = width - size*9;
+                     height = height - size*9;
+                     start_move_x -= 4;
+                     move_x -= 14.5;
+                     move_y -= 17.5;
+                     next_x += 11;
+                     break;
+            case 10:  width = width - size*8;
+                      height = height - size*8;
+                      start_move_x -= 4;
+                      move_x -= 14.5;
+                      move_y -= 17.5;
+                      next_x += 11;
+                      break;
+            case 11:  width = width - size*7;
+                      height = height - size*7;
+                      start_move_x -= 6;
+                      move_x -= 17.0;
+                      move_y -= 18.5;
+                      next_x += 11;
+                      break;   
+            case 12:  width = width - size*7;
+                      height = height - size*7;
+                      start_move_x -= 6;
+                      move_x -= 17.0;
+                      move_y -= 18.5;
+                      next_x += 11;
+                      break; 
+            case 13:  width = width - size*6.5;
+                      height = height - size*6.5;
+                      start_move_x -= 6.8;
+                      move_x -= 17.0;
+                      move_y -= 18.5;
+                      next_x += 7;
+                      break; 
+            case 14:  width = width - size*6.5;
+                      height = height - size*6.5;
+                      start_move_x -= 6.8;
+                      move_x -= 17.0;
+                      move_y -= 18.5;
+                      next_x += 7;
+                      break; 
+            case 15:  width = width - size*6;
+                      height = height - size*6;
+                      start_move_x -= 7.6;
+                      move_x -= 17.0;
+                      move_y -= 18.5;
+                      next_x -= 9;
+                      break; 
+            case 16:  width = width - size*6;
+                      height = height - size*6;
+                      start_move_x -= 7.6;
+                      move_x -= 17.2;
+                      move_y -= 18.7;
+                      next_x -= 9;
+                      break; 
+        }
+        
+        x = start_x - size*start_move_x;
+
+        
+        for(int i = 0; i < size; i++){
+        	if(x <= boundary_x && y <= boundary_y){ 
+        		
+        		gc.setFill(Color.BLUE);
+        		gc.fillOval(x, y, width, height);
+        		x += size*move_x;
+        		y += size*move_y;
+        		System.out.println("X: "+x+"  Y:"+y);
+        		System.out.println("1" + i);
+        	} else {
+        		gc.setFill(Color.GREEN);
+        		System.out.println("2:" + i);
+        		count++;
+        		x = start_x - size*start_move_x + count*next_x;
+        		y = 0;
+        		gc.fillOval(x, y, width, height);
+        		
+        		x += size*move_x;
+        		y += size*move_y;
+        		
+        		boundary_x += 35;
+        		boundary_y -= 15;
+        	}
+
+        }
+	    
+
+
+		
 	}
+	
 
 	private void initListeners() {
 		initTimeTemperatureListener();
@@ -553,7 +745,7 @@ public class SprinklerSystemController implements Initializable {
 			public void invalidated(Observable observable) {
 				String id = ((ReadOnlyObjectProperty<String>) observable).getValue();
 				Sprinkler targetSprinkler = getSprinkler(id);
-				boolean enabled = targetSprinkler.isOn();
+				boolean enabled = targetSprinkler.isOnIndividual();
 				boolean functional = targetSprinkler.isFunctional();
 
 				individualEnableCheckBox.setDisable(!functional);
@@ -593,8 +785,8 @@ public class SprinklerSystemController implements Initializable {
 	// Event Listener on CheckBox[#groupEnableDisableCheckBox].onMouseClicked
 	@FXML
 	public void enableOrDisableGroupConfiguration(MouseEvent event) {
-		// TODO: start recording water volume
-
+		// Receive parameters from UI to model
+        
 		// Get target sprinkler group
 		Location location = groupConfigGroupChoiceBox.getSelectionModel().selectedItemProperty().getValue();
 		SprinklerGroup sprinklerGroup = null;
@@ -615,12 +807,14 @@ public class SprinklerSystemController implements Initializable {
 			assert false;
 		}
 
+		// 
 		if (groupEnableDisableCheckBox.isSelected()) {
-			sprinklerGroup.setEnabled(true);
+			sprinklerGroup.setEnabled(true); 
 			for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
-				sprinkler.enableByUser();
+				sprinkler.enableByUser(); // Enable may not performed here.
 			}
 
+			
 			this.groupStartTimeChoiceBoxMon.setDisable(true);
 			this.groupEndTimeChoiceBoxMon.setDisable(true);
 			this.groupVolumeChoiceBoxMon.setDisable(true);
@@ -651,7 +845,7 @@ public class SprinklerSystemController implements Initializable {
 		} else {
 			sprinklerGroup.setEnabled(false);
 			for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
-				sprinkler.disableByUser();
+				sprinkler.disableByUser();  // Enable may not performed here.
 			}
 
 			this.groupStartTimeChoiceBoxMon.setDisable(false);

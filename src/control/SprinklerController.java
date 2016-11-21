@@ -22,6 +22,7 @@ public class SprinklerController extends Thread {
 		this.waterConsumptionSimulator = waterConsumptionSimulator;
 		this.forceEnabledSprinklers = new HashMap<Sprinkler, Integer>();
 		this.forceDisabledSprinklers = new HashMap<Sprinkler, Integer>();
+		this.sprinklerGroup = sprinklerGroup;
 	}
 
 	public void addForceEnabledSprinkler(Sprinkler sprinkler) {
@@ -83,7 +84,7 @@ public class SprinklerController extends Thread {
 							continue;
 						}
 					} else {
-						if (hour < sprinkler.getIndividualSchedule().getStartTime()) {
+						if (hour >= sprinkler.getIndividualSchedule().getStartTime()) {
 							sprinkler.enableByUserIndividual();
 							volumePerHour += sprinkler.getIndividualSchedule().getVolumePerHour();
 							continue;
@@ -97,7 +98,7 @@ public class SprinklerController extends Thread {
 							volumePerHour -= sprinkler.getGroupSchedule().getVolumePerHour();
 						}
 					} else {
-						if (hour < sprinkler.getGroupSchedule().getStartTime()) {
+						if (hour >= sprinkler.getGroupSchedule().getStartTime()) {
 							sprinkler.enableByUserGroup();
 							volumePerHour += sprinkler.getGroupSchedule().getVolumePerHour();
 						}
