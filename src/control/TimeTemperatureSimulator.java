@@ -14,6 +14,7 @@ public class TimeTemperatureSimulator extends Thread {
 	private int year;
 	private int month;
 	private int day;
+	private int dayOfWeek;
 	private int hour;
 	private int minute;
 
@@ -29,6 +30,9 @@ public class TimeTemperatureSimulator extends Thread {
 				}
 				if (hour == 24) {
 					hour = 0;
+					if (dayOfWeek++ == 6) {
+						dayOfWeek = 0;
+					}
 					if (day++ == 30) {
 						day = 0;
 						if (month++ == 12) {
@@ -90,6 +94,10 @@ public class TimeTemperatureSimulator extends Thread {
 
 	public int getDay() {
 		return this.day;
+	}
+	
+	public int getDayOfWeek() {
+		return this.dayOfWeek;
 	}
 
 	public int getMonth() {

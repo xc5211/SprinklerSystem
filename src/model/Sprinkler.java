@@ -1,5 +1,6 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,8 +10,10 @@ public class Sprinkler implements Interruptable {
 
 	private String id;
 	private Location location;
-	private Schedule groupSchedule;
-	private Schedule individualSchedule;
+	private Schedule[] groupSchedule;
+	private boolean isGroupScheduleSet;
+	private Schedule[] individualSchedule;
+	private boolean isIndividualScheduleSet;
 	private boolean functional;
 	private boolean onGroup;
 	private boolean onIndividual;
@@ -25,8 +28,10 @@ public class Sprinkler implements Interruptable {
 	public Sprinkler(Location location, int locationId, boolean functional) {
 		this.location = location;
 		this.id = locationId + location.getVal();
-		this.groupSchedule = new Schedule();
-		this.individualSchedule = new Schedule();
+		this.groupSchedule = new Schedule[7];
+		this.isGroupScheduleSet = false;
+		this.individualSchedule = new Schedule[7];
+		this.isIndividualScheduleSet = false;
 		this.functional = functional;
 		this.onGroup = false;
 		this.onIndividual = false;
@@ -47,12 +52,20 @@ public class Sprinkler implements Interruptable {
 		return this.location;
 	}
 
-	public Schedule getGroupSchedule() {
+	public Schedule[] getGroupSchedule() {
 		return this.groupSchedule;
 	}
 
-	public Schedule getIndividualSchedule() {
+	public Schedule[] getIndividualSchedule() {
 		return this.individualSchedule;
+	}
+
+	public boolean isGroupScheduleSet() {
+		return this.isGroupScheduleSet;
+	}
+
+	public boolean isIndividualScheduleSet() {
+		return this.isIndividualScheduleSet;
 	}
 
 	public boolean isFunctional() {
@@ -67,7 +80,7 @@ public class Sprinkler implements Interruptable {
 		return this.onIndividual;
 	}
 
-	public boolean isSystemInterrupted() {
+	public boolean isTemperatureInterrupted() {
 		return this.onTemperatureInterrupted;
 	}
 
@@ -97,7 +110,6 @@ public class Sprinkler implements Interruptable {
 			return;
 		}
 		this.onTemperatureInterrupted = true;
-
 		this.setUserInterfaceProperties();
 	}
 
@@ -106,8 +118,7 @@ public class Sprinkler implements Interruptable {
 		if (!isFunctional()) {
 			return;
 		}
-		this.onTemperatureInterrupted = false;
-
+		this.onTemperatureInterrupted = true;
 		this.setUserInterfaceProperties();
 	}
 
@@ -141,7 +152,6 @@ public class Sprinkler implements Interruptable {
 			return;
 		}
 		this.onGroup = true;
-
 		this.setUserInterfaceProperties();
 	}
 
@@ -151,9 +161,7 @@ public class Sprinkler implements Interruptable {
 			return;
 		}
 		this.onGroup = false;
-
 		this.setUserInterfaceProperties();
-
 	}
 
 	@Override
@@ -162,7 +170,6 @@ public class Sprinkler implements Interruptable {
 			return;
 		}
 		this.onIndividual = true;
-
 		this.setUserInterfaceProperties();
 	}
 
@@ -172,27 +179,62 @@ public class Sprinkler implements Interruptable {
 			return;
 		}
 		this.onIndividual = false;
-
 		this.setUserInterfaceProperties();
 	}
 
 	@Override
-	public void setGroupSchedule(Schedule schedule) {
-		this.groupSchedule = schedule;
+	public void disableTemperatureInterrupt() {
+		this.onTemperatureInterrupted = false;
+		this.setUserInterfaceProperties();
 	}
 
 	@Override
-	public void setIndividualSchedule(Schedule schedule) {
-		this.individualSchedule = schedule;
+	public void setGroupSchedule(int day, Schedule schedule) {
+		this.groupSchedule[day] = schedule;
+
+		for (Schedule sch : this.groupSchedule) {
+			if (sch == null) {
+				this.isGroupScheduleSet = false;
+				break;
+			}
+			this.isGroupScheduleSet = true;
+		}
 	}
 
-	private void setUserInterfaceProperties(){		
-		if(this.onTemperatureInterrupted || this.onGroup || this.onIndividual){
-			this.onProperty.set(true);
-			this.forceInterruptProperty.set("Disable");
+	@Override
+	public void setIndividualSchedule(int day, Schedule schedule) {
+		this.individualSchedule[day] = schedule;
+
+		for (Schedule sch : this.individualSchedule) {
+			if (sch == null) {
+				this.isIndividualScheduleSet = false;
+				break;
+			}
+			this.isIndividualScheduleSet = true;
+		}
+	}
+
+	private void setUserInterfaceProperties() {
+		if (this.onTemperatureInterrupted || this.onGroup || this.onIndividual) {
+			if (!Platform.isFxApplicationThread()) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						onProperty.set(true);
+						forceInterruptProperty.setValue("Disable");
+					}
+				});
+			}
 		} else {
-			this.onProperty.set(false);
-			this.forceInterruptProperty.set(" Enable");
+			if (!Platform.isFxApplicationThread()) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						onProperty.set(false);
+						forceInterruptProperty.setValue(" Enable");
+					}
+				});
+			}
 		}
 	}
 }

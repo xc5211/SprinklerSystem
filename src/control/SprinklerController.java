@@ -8,7 +8,8 @@ import model.SprinklerGroup;
 
 public class SprinklerController extends Thread {
 
-	private static final int FORCE_INTERRUPT_DURATION = 3;
+	private static final int FORCE_INTERRUPT_DURATION_IN_HOUR = 3;
+	private static final int TEMPERATURE_ENABLE_VOLUME_PER_HOUR = 5;
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
 	private WaterConsumptionSimulator waterConsumptionSimulator;
@@ -20,9 +21,9 @@ public class SprinklerController extends Thread {
 			WaterConsumptionSimulator waterConsumptionSimulator, SprinklerGroup[] sprinklerGroup) {
 		this.timeTemperatureSimulator = timeTemperatureSimulator;
 		this.waterConsumptionSimulator = waterConsumptionSimulator;
+		this.sprinklerGroup = sprinklerGroup;
 		this.forceEnabledSprinklers = new HashMap<Sprinkler, Integer>();
 		this.forceDisabledSprinklers = new HashMap<Sprinkler, Integer>();
-		this.sprinklerGroup = sprinklerGroup;
 	}
 
 	public void addForceEnabledSprinkler(Sprinkler sprinkler) {
@@ -36,7 +37,11 @@ public class SprinklerController extends Thread {
 	@Override
 	public void run() {
 
+		double tempTemperature = 0; // Temporarily holding previous temperature
+									// value in temperature-controlled mode.
+
 		while (true) {
+			int dayOfWeek = this.timeTemperatureSimulator.getDayOfWeek();
 			int hour = this.timeTemperatureSimulator.getHour();
 			double temperature = this.timeTemperatureSimulator.getTemperature();
 
@@ -50,7 +55,7 @@ public class SprinklerController extends Thread {
 					// Force interrupt control
 					if (forceEnabledSprinklers.get(sprinkler) != null) {
 						int interruptHour = forceEnabledSprinklers.get(sprinkler);
-						if (hour > (interruptHour + FORCE_INTERRUPT_DURATION) % 24) {
+						if (hour > (interruptHour + FORCE_INTERRUPT_DURATION_IN_HOUR) % 24) {
 							forceEnabledSprinklers.remove(sprinkler);
 						} else {
 							continue;
@@ -58,49 +63,67 @@ public class SprinklerController extends Thread {
 					}
 					if (forceDisabledSprinklers.get(sprinkler) != null) {
 						int interruptHour = forceDisabledSprinklers.get(sprinkler);
-						if (hour > (interruptHour + FORCE_INTERRUPT_DURATION) % 24) {
+						if (hour > (interruptHour + FORCE_INTERRUPT_DURATION_IN_HOUR) % 24) {
 							forceDisabledSprinklers.remove(sprinkler);
 						} else {
 							continue;
 						}
 					}
 
-					// Temperature control
+					// Temperature control - feature on
 					if (temperature < 55) {
+						tempTemperature = temperature;
 						sprinkler.disableByTemperature();
 						volumePerHour = 0;
 						continue;
 					} else if (temperature > 90) {
+						tempTemperature = temperature;
 						sprinkler.enableByTemperature();
-						volumePerHour += 2;
+						volumePerHour += TEMPERATURE_ENABLE_VOLUME_PER_HOUR;
 						continue;
 					}
 
-					// User control - individual
-					if (sprinkler.isOnIndividual()) {
-						if (hour > sprinkler.getIndividualSchedule().getEndTime()) {
-							sprinkler.disableByUserIndividual();
-							volumePerHour -= sprinkler.getIndividualSchedule().getVolumePerHour();
-							continue;
+					// Temperature control - feature off
+					if (sprinkler.isTemperatureInterrupted()) {
+						if (tempTemperature < 55 && temperature >= 55) {
+							sprinkler.disableTemperatureInterrupt();
+							// Volume/Hour will be set in individual
+							// or group section below.
 						}
-					} else {
-						if (hour >= sprinkler.getIndividualSchedule().getStartTime()) {
-							sprinkler.enableByUserIndividual();
-							volumePerHour += sprinkler.getIndividualSchedule().getVolumePerHour();
-							continue;
+						if (tempTemperature > 90 && temperature <= 90) {
+							sprinkler.disableTemperatureInterrupt();
+							volumePerHour -= TEMPERATURE_ENABLE_VOLUME_PER_HOUR;
 						}
 					}
 
-					// User control - group
-					if (sprinkler.isOnGroup()) {
-						if (hour > sprinkler.getGroupSchedule().getEndTime()) {
-							sprinkler.disableByUserGroup();
-							volumePerHour -= sprinkler.getGroupSchedule().getVolumePerHour();
+					// User control - individual
+					if (sprinkler.isIndividualScheduleSet()) {
+						if (sprinkler.isOnIndividual()) {
+							if (hour > sprinkler.getIndividualSchedule()[dayOfWeek].getEndTime()) {
+								sprinkler.disableByUserIndividual();
+								volumePerHour -= sprinkler.getIndividualSchedule()[dayOfWeek].getVolumePerHour();
+							}
+						} else {
+							if (hour >= sprinkler.getIndividualSchedule()[dayOfWeek].getStartTime()) {
+								sprinkler.enableByUserIndividual();
+								volumePerHour += sprinkler.getIndividualSchedule()[dayOfWeek].getVolumePerHour();
+							}
 						}
-					} else {
-						if (hour >= sprinkler.getGroupSchedule().getStartTime()) {
-							sprinkler.enableByUserGroup();
-							volumePerHour += sprinkler.getGroupSchedule().getVolumePerHour();
+						continue;
+					}
+
+					// User control - group
+					if (sprinkler.isGroupScheduleSet()) {
+						if (sprinkler.isOnGroup()) {
+							if (hour > sprinkler.getGroupSchedule()[dayOfWeek].getEndTime()) {
+								sprinkler.disableByUserGroup();
+								volumePerHour -= sprinkler.getGroupSchedule()[dayOfWeek].getVolumePerHour();
+							}
+						} else {
+							if (hour >= sprinkler.getGroupSchedule()[dayOfWeek].getStartTime()) {
+								sprinkler.enableByUserGroup();
+								volumePerHour += sprinkler.getGroupSchedule()[dayOfWeek].getVolumePerHour();
+							}
 						}
 					}
 				}

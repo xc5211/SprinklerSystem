@@ -39,9 +39,6 @@ public class WaterConsumptionSimulator extends Thread {
 
 		while (true) {
 			int totalVolumePerHour = this.locationWaterConsumption.getVolumePerHourTotal();
-			if (totalVolumePerHour == 0) {
-				continue;
-			}
 
 			if (this.timeTemperatureSimulator.getMonth() != currentMonth) {
 				currentMonth = this.timeTemperatureSimulator.getMonth();
