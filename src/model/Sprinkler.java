@@ -17,8 +17,9 @@ public class Sprinkler implements Interruptable {
 	private boolean functional;
 	private boolean onGroup;
 	private boolean onIndividual;
-	private boolean onTemperatureInterrupted;
+	private boolean onTemperature;
 	private boolean onUserInterrupted;
+	private boolean temperatureInterrupted;
 
 	private BooleanProperty functionalProperty;
 	private BooleanProperty enableProperty;
@@ -35,8 +36,9 @@ public class Sprinkler implements Interruptable {
 		this.functional = functional;
 		this.onGroup = false;
 		this.onIndividual = false;
-		this.onTemperatureInterrupted = false;
+		this.onTemperature = false;
 		this.onUserInterrupted = false;
+		this.temperatureInterrupted = false;
 
 		this.functionalProperty = new SimpleBooleanProperty(functional);
 		this.enableProperty = new SimpleBooleanProperty(!functional);
@@ -81,7 +83,7 @@ public class Sprinkler implements Interruptable {
 	}
 
 	public boolean isTemperatureInterrupted() {
-		return this.onTemperatureInterrupted;
+		return this.temperatureInterrupted;
 	}
 
 	public boolean isUserInterrupted() {
@@ -109,7 +111,8 @@ public class Sprinkler implements Interruptable {
 		if (!isFunctional()) {
 			return;
 		}
-		this.onTemperatureInterrupted = true;
+		this.onTemperature = true;
+		this.temperatureInterrupted = true;
 		this.setUserInterfaceProperties();
 	}
 
@@ -118,7 +121,8 @@ public class Sprinkler implements Interruptable {
 		if (!isFunctional()) {
 			return;
 		}
-		this.onTemperatureInterrupted = true;
+		this.onTemperature = false;
+		this.temperatureInterrupted = true;
 		this.setUserInterfaceProperties();
 	}
 
@@ -184,7 +188,8 @@ public class Sprinkler implements Interruptable {
 
 	@Override
 	public void disableTemperatureInterrupt() {
-		this.onTemperatureInterrupted = false;
+		this.onTemperature = false;
+		this.temperatureInterrupted = false;
 		this.setUserInterfaceProperties();
 	}
 
@@ -215,7 +220,7 @@ public class Sprinkler implements Interruptable {
 	}
 
 	private void setUserInterfaceProperties() {
-		if (this.onTemperatureInterrupted || this.onGroup || this.onIndividual) {
+		if (this.onTemperature || this.onGroup || this.onIndividual) {
 			if (!Platform.isFxApplicationThread()) {
 				Platform.runLater(new Runnable() {
 					@Override
