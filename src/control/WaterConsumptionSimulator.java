@@ -14,9 +14,7 @@ public class WaterConsumptionSimulator extends Thread {
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
 	private BarChart<Integer, Integer> waterVolumeBarChart;
-	private int currentMonth;
 	private LocationWaterConsumption locationWaterConsumption;
-	private int prevMin;
 
 	private IntegerProperty[] monthlyConsumption;
 
@@ -25,7 +23,6 @@ public class WaterConsumptionSimulator extends Thread {
 
 	public WaterConsumptionSimulator(TimeTemperatureSimulator timeTemperatureSimulator) {
 		this.timeTemperatureSimulator = timeTemperatureSimulator;
-		this.currentMonth = timeTemperatureSimulator.getMonth();
 		this.locationWaterConsumption = new LocationWaterConsumption();
 
 		this.monthlyConsumption = new SimpleIntegerProperty[12];
@@ -35,7 +32,9 @@ public class WaterConsumptionSimulator extends Thread {
 	}
 
 	public void run() {
+		int currentMonth = 0;
 		int currentMonthConsumption = 0;
+		int prevMin = 0;
 
 		while (true) {
 			int totalVolumePerHour = this.locationWaterConsumption.getVolumePerHourTotal();
@@ -53,7 +52,7 @@ public class WaterConsumptionSimulator extends Thread {
 				prevMin = currMin;
 
 				monthlyConsumption[currentMonth].set(currentMonthConsumption);
-				updateBarChart();
+				updateBarChart(currentMonth);
 			}
 
 			try {
@@ -80,10 +79,6 @@ public class WaterConsumptionSimulator extends Thread {
 			break;
 		default:
 			assert false;
-		}
-
-		if (volumePerHour != 0) {
-			prevMin = this.timeTemperatureSimulator.getMinute();
 		}
 	}
 
@@ -114,24 +109,31 @@ public class WaterConsumptionSimulator extends Thread {
 
 	public void setBarChart(BarChart<Integer, Integer> barChart) {
 		this.waterVolumeBarChart = barChart;
+		initBarChart();
 	}
 
-	private void updateBarChart() {
+	private void initBarChart() {
+		ObservableList<XYChart.Series<Integer, Integer>> barChartData = FXCollections.observableArrayList();
+		for (int i = 0; i < WATER_VOLUME_BARCHART_X_AXIS_LIST.length; i++) {
+			XYChart.Series<Integer, Integer> monthData = new XYChart.Series(FXCollections.observableArrayList());
+			monthData.dataProperty().setValue(
+					FXCollections.observableArrayList(new XYChart.Data(WATER_VOLUME_BARCHART_X_AXIS_LIST[i], 0)));
+			barChartData.add(monthData);
+		}
+		waterVolumeBarChart.setData(barChartData);
+	}
+
+	private void updateBarChart(int month) {
 
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
 
-				ObservableList<XYChart.Series<Integer, Integer>> barChartData = FXCollections.observableArrayList();
-				for (int i = 0; i < WATER_VOLUME_BARCHART_X_AXIS_LIST.length; i++) {
-					XYChart.Series<Integer, Integer> monthData = new XYChart.Series(
-							FXCollections.observableArrayList());
-					monthData.dataProperty().setValue(FXCollections.observableArrayList(
-							new XYChart.Data(WATER_VOLUME_BARCHART_X_AXIS_LIST[i], monthlyConsumption[i].get())));
-					barChartData.add(monthData);
-				}
-				waterVolumeBarChart.setData(barChartData);
+				ObservableList<XYChart.Series<Integer, Integer>> barChartData = waterVolumeBarChart.getData();
+				XYChart.Series<Integer, Integer> monthData = barChartData.get(month);
+				monthData.setData(FXCollections.observableArrayList(
+						new XYChart.Data(WATER_VOLUME_BARCHART_X_AXIS_LIST[month], monthlyConsumption[month].get())));
 			}
 		});
 
