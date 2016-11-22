@@ -87,6 +87,14 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
+                        <Text fx:id="dayOfWeekText" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" wrappingWidth="60.0">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" textAlignment="CENTER" wrappingWidth="159.8046875">
                            <font>
                               <Font size="25.0" />
@@ -160,19 +168,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxMon" onMouseClicked="#selectGroupStartTimeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxMon" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxMon" onMouseClicked="#selectGroupEndTimeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxMon" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxMon" onMouseClicked="#selectGroupVolumeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxMon" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -187,19 +195,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxTue" onMouseClicked="#selectGroupStartTimeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxTue" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxTue" onMouseClicked="#selectGroupEndTimeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxTue" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxTue" onMouseClicked="#selectGroupVolumeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxTue" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -214,19 +222,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxWed" onMouseClicked="#selectGroupStartTimeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxWed" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxWed" onMouseClicked="#selectGroupEndTimeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxWed" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxWed" onMouseClicked="#selectGroupVolumeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxWed" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -241,19 +249,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxThu" onMouseClicked="#selectGroupStartTimeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxThu" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxThu" onMouseClicked="#selectGroupEndTimeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxThu" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxThu" onMouseClicked="#selectGroupVolumeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxThu" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -268,19 +276,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxFri" onMouseClicked="#selectGroupStartTimeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxFri" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxFri" onMouseClicked="#selectGroupEndTimeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxFri" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxFri" onMouseClicked="#selectGroupVolumeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxFri" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -295,19 +303,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxSat" onMouseClicked="#selectGroupStartTimeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxSat" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxSat" onMouseClicked="#selectGroupEndTimeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxSat" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxSat" onMouseClicked="#selectGroupVolumeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxSat" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -322,19 +330,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxSun" onMouseClicked="#selectGroupStartTimeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupStartTimeChoiceBoxSun" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxSun" onMouseClicked="#selectGroupEndTimeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupEndTimeChoiceBoxSun" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="groupVolumeChoiceBoxSun" onMouseClicked="#selectGroupVolumeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="groupVolumeChoiceBoxSun" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -389,19 +397,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxMon" onMouseClicked="#selectIndividualStartTimeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxMon" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxMon" onMouseClicked="#selectIndividualEndTimeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxMon" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxMon" onMouseClicked="#selectIndividualVolumeMon" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxMon" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -416,19 +424,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxTue" onMouseClicked="#selectIndividualStartTimeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxTue" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxTue" onMouseClicked="#selectIndividualEndTimeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxTue" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxTue" onMouseClicked="#selectIndividualVolumeTue" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxTue" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -443,19 +451,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxWed" onMouseClicked="#selectIndividualStartTimeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxWed" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxWed" onMouseClicked="#selectIndividualEndTimeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxWed" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxWed" onMouseClicked="#selectIndividualVolumeWed" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxWed" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -470,19 +478,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxThu" onMouseClicked="#selectIndividualStartTimeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxThu" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxThu" onMouseClicked="#selectIndividualEndTimeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxThu" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxThu" onMouseClicked="#selectIndividualVolumeThu" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxThu" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -497,19 +505,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxFri" onMouseClicked="#selectIndividualStartTimeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxFri" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxFri" onMouseClicked="#selectIndividualEndTimeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxFri" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxFri" onMouseClicked="#selectIndividualVolumeFri" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxFri" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -524,19 +532,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxSat" onMouseClicked="#selectIndividualStartTimeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxSat" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxSat" onMouseClicked="#selectIndividualEndTimeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxSat" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxSat" onMouseClicked="#selectIndividualVolumeSat" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxSat" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />
@@ -551,19 +559,19 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxSun" onMouseClicked="#selectIndividualStartTimeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualStartTimeChoiceBoxSun" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxSun" onMouseClicked="#selectIndividualEndTimeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualEndTimeChoiceBoxSun" prefWidth="150.0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Volume/Hour" textAlignment="CENTER" wrappingWidth="100.13671875">
                                              <VBox.margin>
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <ChoiceBox fx:id="individualVolumeChoiceBoxSun" onMouseClicked="#selectIndividualVolumeSun" prefWidth="150.0" />
+                                          <ChoiceBox fx:id="individualVolumeChoiceBoxSun" prefWidth="150.0" />
                                        </children>
                                        <opaqueInsets>
                                           <Insets />

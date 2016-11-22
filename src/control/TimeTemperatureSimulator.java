@@ -9,6 +9,7 @@ public class TimeTemperatureSimulator extends Thread {
 	private StringProperty monthProperty = new SimpleStringProperty("0");
 	private StringProperty dayProperty = new SimpleStringProperty("0");
 	private StringProperty timeProperty = new SimpleStringProperty();
+	private StringProperty dayOfWeekProperty = new SimpleStringProperty("Mon");
 	private StringProperty temperatureProperty = new SimpleStringProperty();
 
 	private int year;
@@ -33,6 +34,8 @@ public class TimeTemperatureSimulator extends Thread {
 					if (dayOfWeek++ == 6) {
 						dayOfWeek = 0;
 					}
+					setDayOfWeekProperty();
+
 					if (day++ == 30) {
 						day = 0;
 						if (month++ == 12) {
@@ -53,6 +56,34 @@ public class TimeTemperatureSimulator extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private void setDayOfWeekProperty() {
+		switch (dayOfWeek) {
+		case 0:
+			dayOfWeekProperty.set("Mon");
+			break;
+		case 1:
+			dayOfWeekProperty.set("Tue");
+			break;
+		case 2:
+			dayOfWeekProperty.set("Wed");
+			break;
+		case 3:
+			dayOfWeekProperty.set("Thu");
+			break;
+		case 4:
+			dayOfWeekProperty.set("Fri");
+			break;
+		case 5:
+			dayOfWeekProperty.set("Sat");
+			break;
+		case 6:
+			dayOfWeekProperty.set("Sun");
+			break;
+		default:
+			assert false;
 		}
 	}
 
@@ -95,7 +126,7 @@ public class TimeTemperatureSimulator extends Thread {
 	public int getDay() {
 		return this.day;
 	}
-	
+
 	public int getDayOfWeek() {
 		return this.dayOfWeek;
 	}
@@ -126,6 +157,10 @@ public class TimeTemperatureSimulator extends Thread {
 
 	public StringProperty timeProperty() {
 		return this.timeProperty;
+	}
+
+	public StringProperty dayOfWeekProperty() {
+		return this.dayOfWeekProperty;
 	}
 
 	public StringProperty temperatureProperty() {

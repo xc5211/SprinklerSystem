@@ -18,8 +18,10 @@ public class Sprinkler implements Interruptable {
 	private boolean onGroup;
 	private boolean onIndividual;
 	private boolean onTemperature;
-	private boolean onUserInterrupted;
+	private boolean onForceInterrupted;
 	private boolean temperatureInterrupted;
+	private boolean forceInterrupted;
+	private int interruptHour;
 
 	private BooleanProperty functionalProperty;
 	private BooleanProperty enableProperty;
@@ -28,7 +30,7 @@ public class Sprinkler implements Interruptable {
 
 	public Sprinkler(Location location, int locationId, boolean functional) {
 		this.location = location;
-		this.id = locationId + location.getVal();
+		this.id = locationId + location.value();
 		this.groupSchedule = new Schedule[7];
 		this.isGroupScheduleSet = false;
 		this.individualSchedule = new Schedule[7];
@@ -37,8 +39,10 @@ public class Sprinkler implements Interruptable {
 		this.onGroup = false;
 		this.onIndividual = false;
 		this.onTemperature = false;
-		this.onUserInterrupted = false;
+		this.onForceInterrupted = false;
 		this.temperatureInterrupted = false;
+		this.forceInterrupted = false;
+		this.interruptHour = 0;
 
 		this.functionalProperty = new SimpleBooleanProperty(functional);
 		this.enableProperty = new SimpleBooleanProperty(!functional);
@@ -62,6 +66,10 @@ public class Sprinkler implements Interruptable {
 		return this.individualSchedule;
 	}
 
+	public int getInterruptHour() {
+		return this.interruptHour;
+	}
+
 	public boolean isGroupScheduleSet() {
 		return this.isGroupScheduleSet;
 	}
@@ -82,12 +90,16 @@ public class Sprinkler implements Interruptable {
 		return this.onIndividual;
 	}
 
+	public boolean isOnForceInterrupted() {
+		return this.onForceInterrupted;
+	}
+
 	public boolean isTemperatureInterrupted() {
 		return this.temperatureInterrupted;
 	}
 
-	public boolean isUserInterrupted() {
-		return this.onUserInterrupted;
+	public boolean isForceInterrupted() {
+		return this.forceInterrupted;
 	}
 
 	public BooleanProperty functionalProperty() {
@@ -104,6 +116,30 @@ public class Sprinkler implements Interruptable {
 
 	public StringProperty forceInterruptProperty() {
 		return this.forceInterruptProperty;
+	}
+
+	@Override
+	public void enableByForceInterrupt(int interruptHour) {
+		if (!isFunctional()) {
+			return;
+		}
+		this.interruptHour = interruptHour;
+
+		this.onForceInterrupted = true;
+		this.forceInterrupted = true;
+		this.setUserInterfaceInterruptProperties(true);
+	}
+
+	@Override
+	public void disableByForceInterrupt(int interruptHour) {
+		if (!isFunctional()) {
+			return;
+		}
+		this.interruptHour = interruptHour;
+
+		this.onForceInterrupted = false;
+		this.forceInterrupted = true;
+		this.setUserInterfaceInterruptProperties(false);
 	}
 
 	@Override
@@ -124,30 +160,6 @@ public class Sprinkler implements Interruptable {
 		this.onTemperature = false;
 		this.temperatureInterrupted = true;
 		this.setUserInterfaceProperties();
-	}
-
-	@Deprecated
-	@Override
-	public void enableByUser() {
-		if (!isFunctional()) {
-			return;
-		}
-		this.onGroup = true;
-
-		this.onProperty.set(true);
-		this.forceInterruptProperty.set("Disable");
-	}
-
-	@Deprecated
-	@Override
-	public void disableByUser() {
-		if (!isFunctional()) {
-			return;
-		}
-		this.onGroup = false;
-
-		this.onProperty.set(false);
-		this.forceInterruptProperty.set(" Enable");
 	}
 
 	@Override
@@ -187,6 +199,13 @@ public class Sprinkler implements Interruptable {
 	}
 
 	@Override
+	public void disableForceInterrupt() {
+		this.onForceInterrupted = false;
+		this.forceInterrupted = false;
+		this.setUserInterfaceInterruptProperties(false);
+	}
+
+	@Override
 	public void disableTemperatureInterrupt() {
 		this.onTemperature = false;
 		this.temperatureInterrupted = false;
@@ -219,16 +238,46 @@ public class Sprinkler implements Interruptable {
 		}
 	}
 
+	private void setUserInterfaceInterruptProperties(boolean enable) {
+		if (this.forceInterrupted) {
+			String forceInterruptPropertyValue = onForceInterrupted ? "Disable" : "Enable";
+
+			if (!Platform.isFxApplicationThread()) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						onProperty.set(enable);
+						enableProperty.set(enable);
+						forceInterruptProperty.setValue(forceInterruptPropertyValue);
+					}
+				});
+			} else {
+				onProperty.set(enable);
+				enableProperty.set(enable);
+				forceInterruptProperty.setValue(forceInterruptPropertyValue);
+			}
+		}
+	}
+
 	private void setUserInterfaceProperties() {
+		if (this.forceInterrupted) {
+			return;
+		}
+
 		if (this.onTemperature || this.onGroup || this.onIndividual) {
 			if (!Platform.isFxApplicationThread()) {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						onProperty.set(true);
+						enableProperty.set(false);
 						forceInterruptProperty.setValue("Disable");
 					}
 				});
+			} else {
+				onProperty.set(true);
+				enableProperty.set(false);
+				forceInterruptProperty.setValue("Disable");
 			}
 		} else {
 			if (!Platform.isFxApplicationThread()) {
@@ -236,9 +285,14 @@ public class Sprinkler implements Interruptable {
 					@Override
 					public void run() {
 						onProperty.set(false);
+						enableProperty.set(false);
 						forceInterruptProperty.setValue(" Enable");
 					}
 				});
+			} else {
+				onProperty.set(false);
+				enableProperty.set(false);
+				forceInterruptProperty.setValue(" Enable");
 			}
 		}
 	}

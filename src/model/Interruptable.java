@@ -2,15 +2,13 @@ package model;
 
 public interface Interruptable {
 
+	public void enableByForceInterrupt(int interruptHour);
+	
+	public void disableByForceInterrupt(int interruptHour);
+
 	public void enableByTemperature();
 
 	public void disableByTemperature();
-
-	@Deprecated
-	public void enableByUser();
-
-	@Deprecated
-	public void disableByUser();
 
 	public void enableByUserGroup();
 
@@ -20,6 +18,8 @@ public interface Interruptable {
 
 	public void disableByUserIndividual();
 
+	public void disableForceInterrupt();
+	
 	public void disableTemperatureInterrupt();
 
 	/**

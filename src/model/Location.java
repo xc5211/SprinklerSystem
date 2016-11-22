@@ -10,7 +10,7 @@ public enum Location {
 		this.val = val;
 	}
 
-	public String getVal() {
+	public String value() {
 		return this.val;
 	}
 }
