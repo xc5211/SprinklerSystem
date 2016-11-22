@@ -40,6 +40,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Location;
+import model.Schedule;
 import model.Sprinkler;
 import model.SprinklerGroup;
 
@@ -455,6 +456,16 @@ public class SprinklerSystemController implements Initializable {
 				forceInterruptButton.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						// TODO enable/disable sprinkler
+						if(forceInterruptButton.getText().equals(" Enable")){
+						    sprinklerController.addForceEnabledSprinkler(sprinkler);
+						    
+						    System.out.println("Pressed");
+						} else if(forceInterruptButton.getText().equals("Disable")){
+						    sprinklerController.addForceDisabledSprinkler(sprinkler);
+
+						}
+//						forceInterruptButton.setDisable(true);
+
 					}
 				});
 				hBox.getChildren().add(forceInterruptButton);
@@ -483,7 +494,7 @@ public class SprinklerSystemController implements Initializable {
 		// TODO Draw garden sprinklers based on "sprinklerGroup" map
 
 		
-		int size = 16;
+		int size = 1;
 	
 		gc = gardenMapCanvas.getGraphicsContext2D();
 		gc.setFill(Color.GREEN);
@@ -842,6 +853,32 @@ public class SprinklerSystemController implements Initializable {
 			this.groupStartTimeChoiceBoxSun.setDisable(true);
 			this.groupEndTimeChoiceBoxSun.setDisable(true);
 			this.groupVolumeChoiceBoxSun.setDisable(true);
+			
+			
+			for(int i = 0; i < sprinklerGroup.getSprinklers().size(); i++){
+				Schedule sprinklerScheduleMon = new Schedule(this.groupStartTimeChoiceBoxMon.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxMon.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxMon.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(0, sprinklerScheduleMon);
+				
+				Schedule sprinklerScheduleTue = new Schedule(this.groupStartTimeChoiceBoxTue.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxTue.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxTue.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(1, sprinklerScheduleTue);
+				
+				Schedule sprinklerScheduleWed = new Schedule(this.groupStartTimeChoiceBoxWed.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxWed.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxWed.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(2, sprinklerScheduleWed);
+				
+				Schedule sprinklerScheduleThu = new Schedule(this.groupStartTimeChoiceBoxThu.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxThu.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxThu.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(3, sprinklerScheduleThu);
+				
+				Schedule sprinklerScheduleFri = new Schedule(this.groupStartTimeChoiceBoxFri.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxFri.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxFri.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(4, sprinklerScheduleFri);
+				
+				Schedule sprinklerScheduleSat = new Schedule(this.groupStartTimeChoiceBoxSat.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxSat.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxSat.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(5, sprinklerScheduleSat);
+				
+				Schedule sprinklerScheduleSun = new Schedule(this.groupStartTimeChoiceBoxSun.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxSun.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxSun.getSelectionModel().getSelectedItem());
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(6, sprinklerScheduleSun);
+			}
+			
+			
 		} else {
 			sprinklerGroup.setEnabled(false);
 			for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
@@ -875,6 +912,23 @@ public class SprinklerSystemController implements Initializable {
 			this.groupStartTimeChoiceBoxSun.setDisable(false);
 			this.groupEndTimeChoiceBoxSun.setDisable(false);
 			this.groupVolumeChoiceBoxSun.setDisable(false);
+			
+			
+			for(int i = 0; i < sprinklerGroup.getSprinklers().size(); i++){
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(0, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(1, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(2, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(3, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(4, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(5, null);
+				
+				sprinklerGroup.getSprinklers().get(i).setGroupSchedule(6, null);
+			}
 		}
 	}
 
@@ -1041,6 +1095,29 @@ public class SprinklerSystemController implements Initializable {
 			this.individualStartTimeChoiceBoxSun.setDisable(true);
 			this.individualEndTimeChoiceBoxSun.setDisable(true);
 			this.individualVolumeChoiceBoxSun.setDisable(true);
+			
+			Schedule sprinklerScheduleMon = new Schedule(this.groupStartTimeChoiceBoxMon.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxMon.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxMon.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(0, sprinklerScheduleMon);
+			
+			Schedule sprinklerScheduleTue = new Schedule(this.groupStartTimeChoiceBoxTue.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxTue.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxTue.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(1, sprinklerScheduleTue);
+			
+			Schedule sprinklerScheduleWed = new Schedule(this.groupStartTimeChoiceBoxWed.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxWed.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxWed.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(2, sprinklerScheduleWed);
+			
+			Schedule sprinklerScheduleThu = new Schedule(this.groupStartTimeChoiceBoxThu.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxThu.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxThu.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(3, sprinklerScheduleThu);
+			
+			Schedule sprinklerScheduleFri = new Schedule(this.groupStartTimeChoiceBoxFri.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxFri.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxFri.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(4, sprinklerScheduleFri);
+			
+			Schedule sprinklerScheduleSat = new Schedule(this.groupStartTimeChoiceBoxSat.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxSat.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxSat.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(5, sprinklerScheduleSat);
+			
+			Schedule sprinklerScheduleSun = new Schedule(this.groupStartTimeChoiceBoxSun.getSelectionModel().getSelectedItem(), this.groupEndTimeChoiceBoxSun.getSelectionModel().getSelectedItem(), this.groupVolumeChoiceBoxSun.getSelectionModel().getSelectedItem());
+			targetSprinkler.setGroupSchedule(6, sprinklerScheduleSun);
+			
+			
 		} else {
 			targetSprinkler.disableByUser();
 
@@ -1071,6 +1148,14 @@ public class SprinklerSystemController implements Initializable {
 			this.individualStartTimeChoiceBoxSun.setDisable(false);
 			this.individualEndTimeChoiceBoxSun.setDisable(false);
 			this.individualVolumeChoiceBoxSun.setDisable(false);
+			
+			targetSprinkler.setIndividualSchedule(0, null);
+			targetSprinkler.setIndividualSchedule(1, null);
+			targetSprinkler.setIndividualSchedule(2, null);
+			targetSprinkler.setIndividualSchedule(3, null);
+			targetSprinkler.setIndividualSchedule(4, null);
+			targetSprinkler.setIndividualSchedule(5, null);
+			targetSprinkler.setIndividualSchedule(6, null);
 		}
 	}
 
