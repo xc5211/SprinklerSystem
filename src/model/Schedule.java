@@ -6,10 +6,10 @@ public class Schedule {
 	private int endTime;
 	private int volumePerHour;
 
-	public Schedule() {
-		this.startTime = 7;
-		this.endTime = 10;
-		this.volumePerHour = 1;
+	public Schedule(int startTime, int endTime, int volumePerHour) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.volumePerHour = volumePerHour;
 	}
 
 	public void setStartTime(int startTime) {
