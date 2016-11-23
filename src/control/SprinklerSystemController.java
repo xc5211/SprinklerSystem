@@ -743,8 +743,10 @@ public class SprinklerSystemController implements Initializable {
 		disableIndividualWeekScheduleSelections(individualEnabled);
 
 		if (individualEnabled) {
+			targetSprinkler.enableByUserIndividual();
 			setIndividualWeekSchedule(targetSprinkler);
 		} else {
+			targetSprinkler.disableByUserIndividual();
 			resetIndividualWeekSchedule(targetSprinkler);
 		}
 	}
