@@ -641,8 +641,10 @@ public class SprinklerSystemController implements Initializable {
 
 		for (Sprinkler sprinkler : sprinklerGroup.getSprinklers()) {
 			if (groupEnabled) {
+				sprinkler.enableByUserGroup();
 				setGroupWeekSchedule(sprinkler);
 			} else {
+				sprinkler.disableByUserGroup();
 				resetGroupWeekSchedule(sprinkler);
 			}
 		}
