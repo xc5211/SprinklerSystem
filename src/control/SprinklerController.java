@@ -6,6 +6,8 @@ import model.SprinklerGroup;
 public class SprinklerController extends Thread {
 
 	private static final int FORCE_INTERRUPT_DURATION_IN_HOUR = 3;
+	private static final int TEMPERATURE_LIMIT_LOW = 55;
+	private static final int TEMPERATURE_LIMIT_HIGH = 70;
 	private static final int TEMPERATURE_ENABLE_VOLUME_PER_HOUR = 5;
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
@@ -31,7 +33,7 @@ public class SprinklerController extends Thread {
 			double temperature = this.timeTemperatureSimulator.getTemperature();
 
 			for (SprinklerGroup sg : sprinklerGroup) {
-				int volumePerHour = 0;
+				int volumePerHour = waterConsumptionSimulator.getVolumePerHour(sg.getLocation());
 				for (Sprinkler sprinkler : sg.getSprinklers()) {
 					if (!sprinkler.isFunctional()) {
 						continue;
@@ -48,12 +50,12 @@ public class SprinklerController extends Thread {
 
 					// Temperature control - feature on
 					if (!sprinkler.isTemperatureInterrupted()) {
-						if (temperature < 55) {
+						if (temperature < TEMPERATURE_LIMIT_LOW) {
 							tempTemperature = temperature;
 							sprinkler.disableByTemperature();
 							volumePerHour = 0;
 							continue;
-						} else if (temperature > 90) {
+						} else if (temperature > TEMPERATURE_LIMIT_HIGH) {
 							tempTemperature = temperature;
 							sprinkler.enableByTemperature();
 							volumePerHour += TEMPERATURE_ENABLE_VOLUME_PER_HOUR;
@@ -63,14 +65,16 @@ public class SprinklerController extends Thread {
 
 					// Temperature control - feature off
 					if (sprinkler.isTemperatureInterrupted()) {
-						if (tempTemperature < 55 && temperature >= 55) {
+						if (tempTemperature < TEMPERATURE_LIMIT_LOW && temperature >= TEMPERATURE_LIMIT_LOW) {
 							sprinkler.disableTemperatureInterrupt();
 							// Volume/Hour will be set in individual
 							// or group section below.
 						}
-						if (tempTemperature > 90 && temperature <= 90) {
+						if (tempTemperature > TEMPERATURE_LIMIT_HIGH && temperature <= TEMPERATURE_LIMIT_HIGH) {
 							sprinkler.disableTemperatureInterrupt();
-							volumePerHour -= TEMPERATURE_ENABLE_VOLUME_PER_HOUR;
+							if (volumePerHour >= 0) {
+								volumePerHour -= TEMPERATURE_ENABLE_VOLUME_PER_HOUR;
+							}
 						}
 					}
 
@@ -79,7 +83,9 @@ public class SprinklerController extends Thread {
 						if (sprinkler.isOnIndividual()) {
 							if (hour > sprinkler.getIndividualSchedule()[dayOfWeek].getEndTime()) {
 								sprinkler.disableByUserIndividual();
-								volumePerHour -= sprinkler.getIndividualSchedule()[dayOfWeek].getVolumePerHour();
+								if (volumePerHour >= 0) {
+									volumePerHour -= sprinkler.getIndividualSchedule()[dayOfWeek].getVolumePerHour();
+								}
 							}
 						} else {
 							if (hour >= sprinkler.getIndividualSchedule()[dayOfWeek].getStartTime()
@@ -96,7 +102,9 @@ public class SprinklerController extends Thread {
 						if (sprinkler.isOnGroup()) {
 							if (hour > sprinkler.getGroupSchedule()[dayOfWeek].getEndTime()) {
 								sprinkler.disableByUserGroup();
-								volumePerHour -= sprinkler.getGroupSchedule()[dayOfWeek].getVolumePerHour();
+								if (volumePerHour >= 0) {
+									volumePerHour -= sprinkler.getGroupSchedule()[dayOfWeek].getVolumePerHour();
+								}
 							}
 						} else {
 							if (hour >= sprinkler.getGroupSchedule()[dayOfWeek].getStartTime()
@@ -105,17 +113,21 @@ public class SprinklerController extends Thread {
 								volumePerHour += sprinkler.getGroupSchedule()[dayOfWeek].getVolumePerHour();
 							}
 						}
+						continue;
 					}
 				}
 
 				// Set new volume/hour if changed
+				if (volumePerHour < 0) {
+					continue;
+				}
 				if (waterConsumptionSimulator.getVolumePerHour(sg.getLocation()) != volumePerHour) {
 					waterConsumptionSimulator.setVolumePerHour(sg.getLocation(), volumePerHour);
 				}
 			}
 
 			try {
-				Thread.sleep(30);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

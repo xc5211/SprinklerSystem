@@ -1,5 +1,6 @@
 package control;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -19,7 +20,7 @@ public class TimeTemperatureSimulator extends Thread {
 	private int hour;
 	private int minute;
 
-	private double temperature = 60;
+	private double temperature = 30;
 
 	public void run() {
 		while (true) {
@@ -34,23 +35,18 @@ public class TimeTemperatureSimulator extends Thread {
 					if (dayOfWeek++ == 6) {
 						dayOfWeek = 0;
 					}
-					setDayOfWeekProperty();
 
 					if (day++ == 30) {
 						day = 0;
 						if (month++ == 12) {
 							month = 0;
 							year++;
-							this.yearProperty.set("" + year);
 						}
-						this.monthProperty.set("" + month);
 					}
-					this.dayProperty.set("" + day);
 				}
 
-				timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));
 				temperature = simulateCurrentTemperature(temperature);
-				temperatureProperty.set(String.format("%.2f", temperature));
+				setUiProperties();
 
 				Thread.sleep(80);
 			} catch (InterruptedException e) {
@@ -59,7 +55,29 @@ public class TimeTemperatureSimulator extends Thread {
 		}
 	}
 
-	private void setDayOfWeekProperty() {
+	private void setUiProperties() {
+		if (Platform.isFxApplicationThread()) {
+			setProperties();
+		} else {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					setProperties();
+				}
+			});
+		}
+	}
+
+	private void setProperties() {
+		setDayOfWeek();
+		this.yearProperty.set(String.valueOf(year));
+		this.monthProperty.set(String.valueOf(month));
+		this.dayProperty.set(String.valueOf(day));
+		this.timeProperty.set(String.format("%2d", hour) + ":" + String.format("%2d", minute));
+		this.temperatureProperty.set(String.format("%.2f", temperature));
+	}
+
+	private void setDayOfWeek() {
 		switch (dayOfWeek) {
 		case 0:
 			dayOfWeekProperty.set("Mon");
@@ -90,18 +108,18 @@ public class TimeTemperatureSimulator extends Thread {
 	// temperature has to be both 55 and 90 in a day(hour changes from 0~24)
 	private double simulateCurrentTemperature(double previousTemp) {
 		double temperature = previousTemp;
-		if (hour >= 0 && hour < 12) {
-			if (temperature > 96) {
+		if (hour >= 6 && hour < 18) {
+			if (temperature > 108) {
 				temperature = (temperature - 0.1);
 			} else if (temperature < 30) {
-				temperature = (temperature + 1);
+				temperature = (temperature + 0.1);
 			} else if (temperature < 90) {
 				temperature = (temperature + 0.6);
 			} else {
 				temperature = (temperature + 0.1);
 			}
-		} else if (hour >= 12 && hour < 24) {
-			if (temperature > 96) {
+		} else if ((hour >= 18 && hour < 24) || hour > 0) {
+			if (temperature > 108) {
 				temperature = (temperature - 1);
 			} else if (temperature < 30) {
 				temperature = (temperature + 1.2);

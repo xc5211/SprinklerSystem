@@ -127,7 +127,7 @@ public class Sprinkler implements Interruptable {
 
 		this.onForceInterrupted = true;
 		this.forceInterrupted = true;
-		this.setUserInterfaceInterruptProperties(true);
+		this.setUserInterfaceInterruptProperties(true, true);
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class Sprinkler implements Interruptable {
 
 		this.onForceInterrupted = false;
 		this.forceInterrupted = true;
-		this.setUserInterfaceInterruptProperties(false);
+		this.setUserInterfaceInterruptProperties(true, false);
 	}
 
 	@Override
@@ -202,7 +202,7 @@ public class Sprinkler implements Interruptable {
 	public void disableForceInterrupt() {
 		this.onForceInterrupted = false;
 		this.forceInterrupted = false;
-		this.setUserInterfaceInterruptProperties(false);
+		this.setUserInterfaceInterruptProperties(false, false);
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class Sprinkler implements Interruptable {
 		}
 	}
 
-	private void setUserInterfaceInterruptProperties(boolean enable) {
+	private void setUserInterfaceInterruptProperties(boolean buttonEnable, boolean on) {
 		if (this.forceInterrupted) {
 			String forceInterruptPropertyValue = onForceInterrupted ? "Disable" : "Enable";
 
@@ -246,14 +246,14 @@ public class Sprinkler implements Interruptable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						onProperty.set(enable);
-						enableProperty.set(enable);
+						onProperty.set(on);
+						enableProperty.set(buttonEnable);
 						forceInterruptProperty.setValue(forceInterruptPropertyValue);
 					}
 				});
 			} else {
-				onProperty.set(enable);
-				enableProperty.set(enable);
+				onProperty.set(on);
+				enableProperty.set(buttonEnable);
 				forceInterruptProperty.setValue(forceInterruptPropertyValue);
 			}
 		}
