@@ -37,6 +37,8 @@ import model.Location;
 import model.Schedule;
 import model.Sprinkler;
 import model.SprinklerGroup;
+import ui.Coordinate;
+import ui.SprinklerDrawingMap;
 
 public class SprinklerSystemController implements Initializable {
 	@FXML
@@ -483,9 +485,8 @@ public class SprinklerSystemController implements Initializable {
 		}
 	}
 
+	// Draw garden sprinklers based on "sprinklerGroup" map
 	private void initGardenCanvas() {
-		// Draw garden sprinklers based on "sprinklerGroup" map
-		int size = 1;
 		int canvisWidth = 410;
 		int canvisHeight = 250;
 
@@ -502,178 +503,41 @@ public class SprinklerSystemController implements Initializable {
 		gc.strokeLine(0, 0, canvisWidth, canvisHeight);
 		gc.strokeLine(0, canvisHeight, canvisWidth, 0);
 
-		// Start point of the Oval(Sprinkler) for every new iteration(change
-		// line)
-		double start_x = 148.5; // For biggest Oval. Only one Oval.
-		double start_y = 0;
+		// TODO The method in next line needs to implemented
+		int sprinklerLocationCountMax = getSprinklerLocationMaxCount();
+		SprinklerDrawingMap sdm = new SprinklerDrawingMap(canvisWidth, canvisHeight, sprinklerLocationCountMax);
+		// TODO The method in next line needs to implemented
+		double radius = getSprinklerDrawingRadius(sprinklerLocationCountMax);
 
-		// Starting boundary, the middle point of the canvas
-		double boundary_x = 205;
-		double boundary_y = 125;
-
-		// Location of every Oval(Sprinkler)
-		double x = 148.5; // 7.0 is for (2,2). +50 If the oval is (30, 30)
-		double y = 0;
-
-		// Size of the Oval(Sprinkler). Changeable.
-		double width = 113;
-		double height = 113;
-
-		int count = 0;
-
-		double move_x = 20;
-		double move_y = 20;
-
-		double start_move_x = 15;
-
-		double next_x = 70;
-		switch (size) {
-		case 1:
-			start_move_x = 0;
-			break;
-		case 2:
-			width = width - size * 20;
-			height = height - size * 20;
-			move_x += 25;
-			move_y -= 25;
-			next_x += 50;
-			break;
-		case 3:
-			width = width - size * 15;
-			height = height - size * 15;
-			move_x += 5;
-			move_y -= 5;
-			next_x += 60;
-			break;
-		case 4:
-			width = width - size * 15;
-			height = height - size * 15;
-			move_x -= 5;
-			move_y -= 10;
-			next_x += 30;
-			break;
-		case 5:
-			width = width - size * 13;
-			height = height - size * 13;
-			move_x -= 10;
-			move_y -= 15;
-			next_x += 45;
-			break;
-		case 6:
-			width = width - size * 10.5;
-			height = height - size * 10.5;
-			move_x -= 10;
-			move_y -= 15;
-			next_x += 40;
-			break;
-		case 7:
-			width = width - size * 10.5;
-			height = height - size * 10.5;
-			start_move_x -= 2;
-			move_x -= 11.5;
-			move_y -= 14.5;
-			next_x += 10;
-			break;
-		case 8:
-			width = width - size * 9;
-			height = height - size * 9;
-			start_move_x -= 4;
-			move_x -= 13.5;
-			move_y -= 16.5;
-			next_x += 11;
-			break;
-		case 9:
-			width = width - size * 9;
-			height = height - size * 9;
-			start_move_x -= 4;
-			move_x -= 14.5;
-			move_y -= 17.5;
-			next_x += 11;
-			break;
-		case 10:
-			width = width - size * 8;
-			height = height - size * 8;
-			start_move_x -= 4;
-			move_x -= 14.5;
-			move_y -= 17.5;
-			next_x += 11;
-			break;
-		case 11:
-			width = width - size * 7;
-			height = height - size * 7;
-			start_move_x -= 6;
-			move_x -= 17.0;
-			move_y -= 18.5;
-			next_x += 11;
-			break;
-		case 12:
-			width = width - size * 7;
-			height = height - size * 7;
-			start_move_x -= 6;
-			move_x -= 17.0;
-			move_y -= 18.5;
-			next_x += 11;
-			break;
-		case 13:
-			width = width - size * 6.5;
-			height = height - size * 6.5;
-			start_move_x -= 6.8;
-			move_x -= 17.0;
-			move_y -= 18.5;
-			next_x += 7;
-			break;
-		case 14:
-			width = width - size * 6.5;
-			height = height - size * 6.5;
-			start_move_x -= 6.8;
-			move_x -= 17.0;
-			move_y -= 18.5;
-			next_x += 7;
-			break;
-		case 15:
-			width = width - size * 6;
-			height = height - size * 6;
-			start_move_x -= 7.6;
-			move_x -= 17.0;
-			move_y -= 18.5;
-			next_x -= 9;
-			break;
-		case 16:
-			width = width - size * 6;
-			height = height - size * 6;
-			start_move_x -= 7.6;
-			move_x -= 17.2;
-			move_y -= 18.7;
-			next_x -= 9;
-			break;
+		// TODO Draw on each location. The following is currently drawing all
+		// possible sprinkler locations. This code needs to be replaced by
+		// actual sprinker locations.
+		while (sdm.hasNextCoordinate(Location.North)) {
+			Coordinate coordinate = sdm.getNextCoordinate(Location.North);
+			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
 		}
-
-		x = start_x - size * start_move_x;
-
-		for (int i = 0; i < size; i++) {
-			if (x <= boundary_x && y <= boundary_y) {
-
-				gc.setFill(Color.GRAY);
-				gc.fillOval(x, y, width, height);
-				x += size * move_x;
-				y += size * move_y;
-				System.out.println("X: " + x + "  Y:" + y);
-				System.out.println("1" + i);
-			} else {
-				gc.setFill(Color.GREEN);
-				System.out.println("2:" + i);
-				count++;
-				x = start_x - size * start_move_x + count * next_x;
-				y = 0;
-				gc.fillOval(x, y, width, height);
-
-				x += size * move_x;
-				y += size * move_y;
-
-				boundary_x += 35;
-				boundary_y -= 15;
-			}
+		while (sdm.hasNextCoordinate(Location.South)) {
+			Coordinate coordinate = sdm.getNextCoordinate(Location.South);
+			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
 		}
+		while (sdm.hasNextCoordinate(Location.West)) {
+			Coordinate coordinate = sdm.getNextCoordinate(Location.West);
+			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+		}
+		while (sdm.hasNextCoordinate(Location.East)) {
+			Coordinate coordinate = sdm.getNextCoordinate(Location.East);
+			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+		}
+	}
+
+	private int getSprinklerLocationMaxCount() {
+		// TODO Get max number of sprinklers in one among all four locations
+		return 6;
+	}
+
+	private double getSprinklerDrawingRadius(int sprinklerLocationCountMax) {
+		// TODO Get sprinkler radius based on max number of sprinklers
+		return 10;
 	}
 
 	private void initListeners() {

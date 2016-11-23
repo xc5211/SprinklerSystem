@@ -13,8 +13,10 @@ public class SprinklerDrawingMap {
 	private static int height;
 	private static int rowMax;
 	private static int colMax;
-	private static int rowDiff;
-	private static int colDiff;
+	private static double rowDiff;
+	private static double colDiff;
+	private static double rowDelta;
+	private static double colDelta;
 	private static int sprinklerCountMax;
 	private static Coordinate[][] coordinateMap;
 	private static Map<Location, List<Coordinate>> locationCoordinateMap;
@@ -22,11 +24,16 @@ public class SprinklerDrawingMap {
 	public SprinklerDrawingMap(int mapWidth, int mapHeight, int sprinklerCount) {
 		width = mapWidth;
 		height = mapHeight;
+		if (sprinklerCount % 2 == 0) {
+			sprinklerCount += 1;
+		}
 		sprinklerCountMax = sprinklerCount;
 		rowMax = sprinklerCount + 1;
 		colMax = sprinklerCount + 1;
 		rowDiff = height / rowMax;
 		colDiff = width / colMax;
+		rowDelta = Math.floor(rowDiff / 2);
+		colDelta = Math.floor(colDiff / 2);
 		initSprinklerCoordinateMap();
 		initSprinklerLocationCoordinateMap();
 	}
@@ -41,8 +48,8 @@ public class SprinklerDrawingMap {
 					continue;
 				}
 
-				int x = j * colDiff;
-				int y = i * rowDiff;
+				double x = j * colDiff;
+				double y = i * rowDiff;
 				coordinateMap[i][j] = new Coordinate(x, y);
 			}
 		}
@@ -64,12 +71,20 @@ public class SprinklerDrawingMap {
 	private void initSprinklerLocationMapNorth() {
 
 		for (int i = 0; i < rowMax / 2; i++) {
-			int left = getLeftBound(i);
-			int right = getRightBound(i);
+			int left = getLeftIndexBound(i);
+			int right = getRightIndexBound(i);
 
 			while (left <= right) {
-				locationCoordinateMap.get(Location.North).add(coordinateMap[i][left]);
-				locationCoordinateMap.get(Location.North).add(coordinateMap[i][right]);
+				Coordinate coordinate = coordinateMap[i][left];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.North).add(coordinate);
+
+				coordinate = coordinateMap[i][right];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.North).add(coordinate);
+
 				coordinateMap[i][left++] = null;
 				coordinateMap[i][right--] = null;
 			}
@@ -79,12 +94,20 @@ public class SprinklerDrawingMap {
 	private void initSprinklerLocationMapSouth() {
 
 		for (int i = rowMax - 1; i > (rowMax - 1) / 2; i--) {
-			int left = getLeftBound(i);
-			int right = getRightBound(i);
+			int left = getLeftIndexBound(i);
+			int right = getRightIndexBound(i);
 
 			while (left <= right) {
-				locationCoordinateMap.get(Location.South).add(coordinateMap[i][left]);
-				locationCoordinateMap.get(Location.South).add(coordinateMap[i][right]);
+				Coordinate coordinate = coordinateMap[i][left];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.South).add(coordinate);
+
+				coordinate = coordinateMap[i][right];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.South).add(coordinate);
+
 				coordinateMap[i][left++] = null;
 				coordinateMap[i][right--] = null;
 			}
@@ -94,12 +117,20 @@ public class SprinklerDrawingMap {
 	private void initSprinklerLocationMapWest() {
 
 		for (int j = 0; j < colMax / 2; j++) {
-			int up = getUpBound(j);
-			int down = getDownBound(j);
+			int up = getUpIndexBound(j);
+			int down = getDownIndexBound(j);
 
 			while (up <= down && up >= 0) {
-				locationCoordinateMap.get(Location.West).add(coordinateMap[up][j]);
-				locationCoordinateMap.get(Location.West).add(coordinateMap[down][j]);
+				Coordinate coordinate = coordinateMap[up][j];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.West).add(coordinate);
+
+				coordinate = coordinateMap[down][j];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.West).add(coordinate);
+
 				coordinateMap[up++][j] = null;
 				coordinateMap[down--][j] = null;
 			}
@@ -109,19 +140,27 @@ public class SprinklerDrawingMap {
 	private void initSprinklerLocationMapEast() {
 
 		for (int j = colMax - 1; j > (colMax - 1) / 2; j--) {
-			int up = getUpBound(j);
-			int down = getDownBound(j);
+			int up = getUpIndexBound(j);
+			int down = getDownIndexBound(j);
 
 			while (up <= down && up >= 0) {
-				locationCoordinateMap.get(Location.East).add(coordinateMap[up][j]);
-				locationCoordinateMap.get(Location.East).add(coordinateMap[down][j]);
+				Coordinate coordinate = coordinateMap[up][j];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.East).add(coordinate);
+
+				coordinate = coordinateMap[down][j];
+				coordinate.setX(Math.floor(coordinate.getX() + colDelta));
+				coordinate.setY(Math.floor(coordinate.getY() + rowDelta));
+				locationCoordinateMap.get(Location.East).add(coordinate);
+
 				coordinateMap[up++][j] = null;
 				coordinateMap[down--][j] = null;
 			}
 		}
 	}
 
-	private int getUpBound(int colNum) {
+	private int getUpIndexBound(int colNum) {
 		for (int i = 0; i < rowMax / 2; i++) {
 			if (coordinateMap[i][colNum] != null) {
 				return i;
@@ -130,7 +169,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getDownBound(int colNum) {
+	private int getDownIndexBound(int colNum) {
 		for (int i = rowMax - 1; i >= rowMax / 2; i--) {
 			if (coordinateMap[i][colNum] != null) {
 				return i;
@@ -139,7 +178,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getLeftBound(int rowNum) {
+	private int getLeftIndexBound(int rowNum) {
 		for (int i = 0; i < colMax / 2; i++) {
 			if (coordinateMap[rowNum][i] == null) {
 				return i + 1;
@@ -148,7 +187,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getRightBound(int rowNum) {
+	private int getRightIndexBound(int rowNum) {
 		for (int i = colMax - 1; i >= colMax / 2; i--) {
 			if (coordinateMap[rowNum][i] == null) {
 				return i - 1;
@@ -158,7 +197,7 @@ public class SprinklerDrawingMap {
 	}
 
 	public static boolean hasNextCoordinate(Location location) {
-		return locationCoordinateMap.get(location).isEmpty();
+		return !locationCoordinateMap.get(location).isEmpty();
 	}
 
 	public static Coordinate getNextCoordinate(Location location) {
