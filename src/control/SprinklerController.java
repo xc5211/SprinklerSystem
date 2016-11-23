@@ -79,7 +79,7 @@ public class SprinklerController extends Thread {
 					}
 
 					// User control - individual
-					if (sprinkler.isOnIndividual() && sprinkler.isIndividualScheduleSet()) {
+					if (sprinkler.isIndividualScheduleSet()) {
 						if (sprinkler.isOnIndividual()) {
 							if (hour > sprinkler.getIndividualSchedule()[dayOfWeek].getEndTime()) {
 								sprinkler.disableByUserIndividual();
@@ -98,7 +98,7 @@ public class SprinklerController extends Thread {
 					}
 
 					// User control - group
-					if (sg.isEnabled() && sprinkler.isGroupScheduleSet()) {
+					if (sprinkler.isGroupScheduleSet()) {
 						if (sprinkler.isOnGroup()) {
 							if (hour > sprinkler.getGroupSchedule()[dayOfWeek].getEndTime()) {
 								sprinkler.disableByUserGroup();
