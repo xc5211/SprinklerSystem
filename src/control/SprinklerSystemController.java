@@ -510,29 +510,45 @@ public class SprinklerSystemController implements Initializable {
 		double radius = getSprinklerDrawingRadius(sprinklerLocationCountMax);
 
 		// TODO Draw on each location. The following is currently drawing all
-		// possible sprinkler locations. This code needs to be replaced by
+		// possible sprinkler locations. This code needs to be replaced(Delete these while loops) by
 		// actual sprinker locations.
-		while (sdm.hasNextCoordinate(Location.North)) {
+		int size_N = sprinklerGroup[0].getSprinklers().size();
+		while (sdm.hasNextCoordinate(Location.North) && size_N != 0) {
 			Coordinate coordinate = sdm.getNextCoordinate(Location.North);
 			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+			size_N--;
 		}
-		while (sdm.hasNextCoordinate(Location.South)) {
+		int size_S = sprinklerGroup[1].getSprinklers().size();
+		while (sdm.hasNextCoordinate(Location.South) && size_S != 0) {
 			Coordinate coordinate = sdm.getNextCoordinate(Location.South);
 			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+			size_S--;
 		}
-		while (sdm.hasNextCoordinate(Location.West)) {
+		int size_W = sprinklerGroup[2].getSprinklers().size();
+		while (sdm.hasNextCoordinate(Location.West) && size_W != 0) {
 			Coordinate coordinate = sdm.getNextCoordinate(Location.West);
 			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+			size_W--;
 		}
-		while (sdm.hasNextCoordinate(Location.East)) {
+		int size_E = sprinklerGroup[3].getSprinklers().size();
+		while (sdm.hasNextCoordinate(Location.East) && size_E != 0) {
 			Coordinate coordinate = sdm.getNextCoordinate(Location.East);
 			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+			size_E--;
 		}
 	}
 
 	private int getSprinklerLocationMaxCount() {
 		// TODO Get max number of sprinklers in one among all four locations
-		return 6;
+		int max_N_S = Math.max(sprinklerGroup[0].getSprinklers().size(), sprinklerGroup[1].getSprinklers().size());
+		int max_W_E = Math.max(sprinklerGroup[2].getSprinklers().size(), sprinklerGroup[3].getSprinklers().size());
+		int max_sprinklers = Math.max(max_N_S, max_W_E);
+		System.out.println("North:  "+sprinklerGroup[0].getSprinklers().size());
+		System.out.println("South:  "+sprinklerGroup[1].getSprinklers().size());
+		System.out.println("West:  "+sprinklerGroup[2].getSprinklers().size());
+		System.out.println("East:  "+sprinklerGroup[3].getSprinklers().size());
+		System.out.println(max_sprinklers);
+		return max_sprinklers;
 	}
 
 	private double getSprinklerDrawingRadius(int sprinklerLocationCountMax) {
