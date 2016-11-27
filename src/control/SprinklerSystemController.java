@@ -553,7 +553,7 @@ public class SprinklerSystemController implements Initializable {
 
 	private double getSprinklerDrawingRadius(int sprinklerLocationCountMax) {
 		// TODO Get sprinkler radius based on max number of sprinklers		
-		return sprinklerLocationCountMax + 5;
+		return 50/sprinklerLocationCountMax;
 	}
 
 	private void initListeners() {
