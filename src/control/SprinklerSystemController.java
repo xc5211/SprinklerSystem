@@ -166,8 +166,6 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	private Canvas gardenMapCanvas;
 
-	private GraphicsContext gc;
-
 	private Stage stage;
 
 	private final static List<Integer> TIME_CHOICES = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -184,10 +182,15 @@ public class SprinklerSystemController implements Initializable {
 	private SprinklerGroup[] sprinklerGroup;
 	private Map<Integer, Integer> waterConsumptionMap; // Keep track of
 														// month/volume water
-														// consumption
+														// consumption. Only
+														// need this if control
+														// is in timer listener.
 	private Map<Sprinkler, Integer> userInterruptMap; // Saves Sprinkler/Time
 														// that's forced to be
-														// interrupted by user
+														// interrupted by user.
+														// Only need this if
+														// control is in timer
+														// listener.
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -229,16 +232,16 @@ public class SprinklerSystemController implements Initializable {
 		this.userInterruptMap = new HashMap<Sprinkler, Integer>();
 
 		Location location = Location.North;
-		int locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		List<Sprinkler> sprinklers = new ArrayList<Sprinkler>();
+		int locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
 		sprinklerGroup[0] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.South;
-		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, false));
@@ -251,8 +254,8 @@ public class SprinklerSystemController implements Initializable {
 		sprinklerGroup[1] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.West;
-		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
@@ -261,8 +264,8 @@ public class SprinklerSystemController implements Initializable {
 		sprinklerGroup[2] = new SprinklerGroup(location, sprinklers);
 
 		location = Location.East;
-		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers = new ArrayList<Sprinkler>();
+		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, false));
 		locationId = LocationSprinklerIdManager.getNextIdNumber(location);
 		sprinklers.add(new Sprinkler(location, locationId, true));
@@ -487,73 +490,56 @@ public class SprinklerSystemController implements Initializable {
 
 	// Draw garden sprinklers based on "sprinklerGroup" map
 	private void initGardenCanvas() {
-		int canvisWidth = 410;
-		int canvisHeight = 250;
+		int canvasWidth = 410;
+		int canvasHeight = 250;
 
-		gc = gardenMapCanvas.getGraphicsContext2D();
+		GraphicsContext gc = gardenMapCanvas.getGraphicsContext2D();
 		gc.setFill(Color.GREEN);
 		gc.setStroke(Color.BLACK);
 		gc.setLineWidth(1);
 		// Draw border
-		gc.strokeLine(0, 0, canvisWidth, 0);
-		gc.strokeLine(canvisWidth, 0, canvisWidth, canvisHeight);
-		gc.strokeLine(0, canvisHeight, canvisWidth, canvisHeight);
-		gc.strokeLine(0, 0, 0, canvisHeight);
+		gc.strokeLine(0, 0, canvasWidth, 0);
+		gc.strokeLine(canvasWidth, 0, canvasWidth, canvasHeight);
+		gc.strokeLine(0, canvasHeight, canvasWidth, canvasHeight);
+		gc.strokeLine(0, 0, 0, canvasHeight);
 		// Draw anti/diagonal
-		gc.strokeLine(0, 0, canvisWidth, canvisHeight);
-		gc.strokeLine(0, canvisHeight, canvisWidth, 0);
+		gc.strokeLine(0, 0, canvasWidth, canvasHeight);
+		gc.strokeLine(0, canvasHeight, canvasWidth, 0);
 
-		// TODO The method in next line needs to implemented
+		drawSprinklersOnCanvas(gc, canvasWidth, canvasHeight);
+	}
+
+	private void drawSprinklersOnCanvas(GraphicsContext gc, int canvasWidth, int canvasHeight) {
+
 		int sprinklerLocationCountMax = getSprinklerLocationMaxCount();
-		SprinklerDrawingMap sdm = new SprinklerDrawingMap(canvisWidth, canvisHeight, sprinklerLocationCountMax);
-		// TODO The method in next line needs to implemented
 		double radius = getSprinklerDrawingRadius(sprinklerLocationCountMax);
+		SprinklerDrawingMap.setDrawingMapParameters(canvasWidth, canvasHeight, sprinklerLocationCountMax);
 
-		// TODO Draw on each location. The following is currently drawing all
-		// possible sprinkler locations. This code needs to be replaced(Delete these while loops) by
-		// actual sprinker locations.
-		int size_N = sprinklerGroup[0].getSprinklers().size();
-		while (sdm.hasNextCoordinate(Location.North) && size_N != 0) {
-			Coordinate coordinate = sdm.getNextCoordinate(Location.North);
-			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
-			size_N--;
-		}
-		int size_S = sprinklerGroup[1].getSprinklers().size();
-		while (sdm.hasNextCoordinate(Location.South) && size_S != 0) {
-			Coordinate coordinate = sdm.getNextCoordinate(Location.South);
-			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
-			size_S--;
-		}
-		int size_W = sprinklerGroup[2].getSprinklers().size();
-		while (sdm.hasNextCoordinate(Location.West) && size_W != 0) {
-			Coordinate coordinate = sdm.getNextCoordinate(Location.West);
-			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
-			size_W--;
-		}
-		int size_E = sprinklerGroup[3].getSprinklers().size();
-		while (sdm.hasNextCoordinate(Location.East) && size_E != 0) {
-			Coordinate coordinate = sdm.getNextCoordinate(Location.East);
-			gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
-			size_E--;
+		for (SprinklerGroup sg : sprinklerGroup) {
+			int sprinklerCount = sg.getSprinklers().size();
+
+			while (SprinklerDrawingMap.hasNextCoordinate(sg.getLocation()) && sprinklerCount != 0) {
+				Coordinate coordinate = SprinklerDrawingMap.getNextCoordinate(sg.getLocation());
+				gc.fillOval(coordinate.getX(), coordinate.getY(), radius, radius);
+				sprinklerCount--;
+			}
 		}
 	}
 
+	/**
+	 * Get max number of sprinklers in one among all four locations
+	 * 
+	 * @return
+	 */
 	private int getSprinklerLocationMaxCount() {
-		// TODO Get max number of sprinklers in one among all four locations
-		int max_N_S = Math.max(sprinklerGroup[0].getSprinklers().size(), sprinklerGroup[1].getSprinklers().size());
-		int max_W_E = Math.max(sprinklerGroup[2].getSprinklers().size(), sprinklerGroup[3].getSprinklers().size());
-		int max_sprinklers = Math.max(max_N_S, max_W_E);
-		System.out.println("North:  "+sprinklerGroup[0].getSprinklers().size());
-		System.out.println("South:  "+sprinklerGroup[1].getSprinklers().size());
-		System.out.println("West:  "+sprinklerGroup[2].getSprinklers().size());
-		System.out.println("East:  "+sprinklerGroup[3].getSprinklers().size());
-		System.out.println(max_sprinklers);
-		return max_sprinklers;
+		int maxNS = Math.max(sprinklerGroup[0].getSprinklers().size(), sprinklerGroup[1].getSprinklers().size());
+		int maxWE = Math.max(sprinklerGroup[2].getSprinklers().size(), sprinklerGroup[3].getSprinklers().size());
+		int max = Math.max(maxNS, maxWE);
+		return max;
 	}
 
 	private double getSprinklerDrawingRadius(int sprinklerLocationCountMax) {
-		// TODO Get sprinkler radius based on max number of sprinklers		
-		return 50/sprinklerLocationCountMax;
+		return 50.0 / sprinklerLocationCountMax;
 	}
 
 	private void initListeners() {

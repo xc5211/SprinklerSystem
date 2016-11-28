@@ -21,6 +21,23 @@ public class SprinklerDrawingMap {
 	private static Coordinate[][] coordinateMap;
 	private static Map<Location, List<Coordinate>> locationCoordinateMap;
 
+	public static void setDrawingMapParameters(int mapWidth, int mapHeight, int sprinklerCount) {
+		width = mapWidth;
+		height = mapHeight;
+		if (sprinklerCount % 2 == 0) {
+			sprinklerCount += 1;
+		}
+		sprinklerCountMax = sprinklerCount;
+		rowMax = sprinklerCount + 1;
+		colMax = sprinklerCount + 1;
+		rowDiff = height / rowMax;
+		colDiff = width / colMax;
+		rowDelta = Math.floor(rowDiff / 2);
+		colDelta = Math.floor(colDiff / 2);
+		initSprinklerCoordinateMap();
+		initSprinklerLocationCoordinateMap();
+	}
+
 	public SprinklerDrawingMap(int mapWidth, int mapHeight, int sprinklerCount) {
 		width = mapWidth;
 		height = mapHeight;
@@ -55,7 +72,7 @@ public class SprinklerDrawingMap {
 		}
 	}
 
-	private void initSprinklerLocationCoordinateMap() {
+	private static void initSprinklerLocationCoordinateMap() {
 		locationCoordinateMap = new HashMap<Location, List<Coordinate>>();
 		locationCoordinateMap.put(Location.North, new ArrayList<Coordinate>());
 		locationCoordinateMap.put(Location.South, new ArrayList<Coordinate>());
@@ -68,7 +85,7 @@ public class SprinklerDrawingMap {
 		initSprinklerLocationMapEast();
 	}
 
-	private void initSprinklerLocationMapNorth() {
+	private static void initSprinklerLocationMapNorth() {
 
 		for (int i = 0; i < rowMax / 2; i++) {
 			int left = getLeftIndexBound(i);
@@ -91,7 +108,7 @@ public class SprinklerDrawingMap {
 		}
 	}
 
-	private void initSprinklerLocationMapSouth() {
+	private static void initSprinklerLocationMapSouth() {
 
 		for (int i = rowMax - 1; i > (rowMax - 1) / 2; i--) {
 			int left = getLeftIndexBound(i);
@@ -114,7 +131,7 @@ public class SprinklerDrawingMap {
 		}
 	}
 
-	private void initSprinklerLocationMapWest() {
+	private static void initSprinklerLocationMapWest() {
 
 		for (int j = 0; j < colMax / 2; j++) {
 			int up = getUpIndexBound(j);
@@ -137,7 +154,7 @@ public class SprinklerDrawingMap {
 		}
 	}
 
-	private void initSprinklerLocationMapEast() {
+	private static void initSprinklerLocationMapEast() {
 
 		for (int j = colMax - 1; j > (colMax - 1) / 2; j--) {
 			int up = getUpIndexBound(j);
@@ -160,7 +177,7 @@ public class SprinklerDrawingMap {
 		}
 	}
 
-	private int getUpIndexBound(int colNum) {
+	private static int getUpIndexBound(int colNum) {
 		for (int i = 0; i < rowMax / 2; i++) {
 			if (coordinateMap[i][colNum] != null) {
 				return i;
@@ -169,7 +186,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getDownIndexBound(int colNum) {
+	private static int getDownIndexBound(int colNum) {
 		for (int i = rowMax - 1; i >= rowMax / 2; i--) {
 			if (coordinateMap[i][colNum] != null) {
 				return i;
@@ -178,7 +195,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getLeftIndexBound(int rowNum) {
+	private static int getLeftIndexBound(int rowNum) {
 		for (int i = 0; i < colMax / 2; i++) {
 			if (coordinateMap[rowNum][i] == null) {
 				return i + 1;
@@ -187,7 +204,7 @@ public class SprinklerDrawingMap {
 		return -1;
 	}
 
-	private int getRightIndexBound(int rowNum) {
+	private static int getRightIndexBound(int rowNum) {
 		for (int i = colMax - 1; i >= colMax / 2; i--) {
 			if (coordinateMap[rowNum][i] == null) {
 				return i - 1;

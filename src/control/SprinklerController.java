@@ -7,7 +7,7 @@ public class SprinklerController extends Thread {
 
 	private static final int FORCE_INTERRUPT_DURATION_IN_HOUR = 3;
 	private static final int TEMPERATURE_LIMIT_LOW = 55;
-	private static final int TEMPERATURE_LIMIT_HIGH = 70;
+	private static final int TEMPERATURE_LIMIT_HIGH = 90;
 	private static final int TEMPERATURE_ENABLE_VOLUME_PER_HOUR = 5;
 
 	private TimeTemperatureSimulator timeTemperatureSimulator;
