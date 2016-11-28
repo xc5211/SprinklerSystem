@@ -3,6 +3,8 @@ package control;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
@@ -17,6 +19,8 @@ public class WaterConsumptionSimulator extends Thread {
 	private LocationWaterConsumption locationWaterConsumption;
 
 	private IntegerProperty[] monthlyConsumption;
+	private int totalWater;
+	private StringProperty totalWaterProperty;
 
 	private static final String[] WATER_VOLUME_BARCHART_X_AXIS_LIST = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
 			"10", "11", "12" };
@@ -29,6 +33,8 @@ public class WaterConsumptionSimulator extends Thread {
 		for (int i = 0; i < monthlyConsumption.length; i++) {
 			this.monthlyConsumption[i] = new SimpleIntegerProperty();
 		}
+		this.totalWater = 0;
+		this.totalWaterProperty = new SimpleStringProperty("0");
 	}
 
 	public void run() {
@@ -48,10 +54,14 @@ public class WaterConsumptionSimulator extends Thread {
 				if (timeDelta < 0) {
 					timeDelta += 60;
 				}
-				currentMonthConsumption += 1.0 * totalVolumePerHour / 60 * timeDelta;
+				
+				double deltaConsumption = 1.0 * totalVolumePerHour / 60 * timeDelta;
+				currentMonthConsumption += deltaConsumption;
+				totalWater += deltaConsumption;
 				prevMin = currMin;
 
 				monthlyConsumption[currentMonth].set(currentMonthConsumption);
+				updateDisplayProperty();
 				updateBarChart(currentMonth);
 			}
 
@@ -61,6 +71,10 @@ public class WaterConsumptionSimulator extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void updateDisplayProperty() {
+		this.totalWaterProperty.set(String.valueOf(totalWater));
 	}
 
 	public void setVolumePerHour(Location location, int volumePerHour) {
@@ -137,5 +151,9 @@ public class WaterConsumptionSimulator extends Thread {
 			}
 		});
 
+	}
+
+	public StringProperty totalWaterProperty() {
+		return this.totalWaterProperty;
 	}
 }

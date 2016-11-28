@@ -52,6 +52,8 @@ public class SprinklerSystemController implements Initializable {
 	@FXML
 	private Text dayOfWeekText;
 	@FXML
+	private Text totalWaterText;
+	@FXML
 	private Text temperatureText;
 	@FXML
 	private ChoiceBox<Location> groupConfigGroupChoiceBox;
@@ -290,6 +292,7 @@ public class SprinklerSystemController implements Initializable {
 		this.dayText.textProperty().bind(timeTemperatureSimulator.dayProperty());
 		this.timeText.textProperty().bind(timeTemperatureSimulator.timeProperty());
 		this.dayOfWeekText.textProperty().bind(timeTemperatureSimulator.dayOfWeekProperty());
+		this.totalWaterText.textProperty().bind(waterConsumptionSimulator.totalWaterProperty());
 		this.temperatureText.textProperty().bind(timeTemperatureSimulator.temperatureProperty());
 	}
 

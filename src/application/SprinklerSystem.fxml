@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.chart.*?>
@@ -23,7 +24,7 @@
                <children>
                   <HBox prefHeight="50.0" prefWidth="820.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" textAlignment="CENTER" wrappingWidth="65.8046875">
+                        <Text fill="#9a0f0f" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" textAlignment="CENTER" wrappingWidth="65.8046875">
                            <HBox.margin>
                               <Insets left="50.0" top="10.0" />
                            </HBox.margin>
@@ -79,7 +80,7 @@
                               <Insets left="5.0" top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="8:04:34" textAlignment="CENTER" wrappingWidth="130.8046875">
+                        <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="8:04:34" textAlignment="CENTER" wrappingWidth="93.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -87,7 +88,7 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="dayOfWeekText" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" wrappingWidth="60.0">
+                        <Text fx:id="dayOfWeekText" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" wrappingWidth="52.0">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -95,15 +96,15 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature:" textAlignment="CENTER" wrappingWidth="159.8046875">
+                        <Text fill="#9a0f0f" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Water:" textAlignment="CENTER" wrappingWidth="147.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="80.0" top="10.0" />
+                              <Insets left="10.0" top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text fx:id="temperatureText" strokeType="OUTSIDE" strokeWidth="0.0" text="60" textAlignment="CENTER" wrappingWidth="97.8046875">
+                        <Text fx:id="totalWaterText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="111.0">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -111,7 +112,15 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="F" wrappingWidth="26.8046875">
+                        <Text fx:id="temperatureText" strokeType="OUTSIDE" strokeWidth="0.0" text="60" textAlignment="CENTER" wrappingWidth="68.8046875">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Text fill="#9a0f0f" strokeType="OUTSIDE" strokeWidth="0.0" text="F" wrappingWidth="15.8046875">
                            <font>
                               <Font size="25.0" />
                            </font>
