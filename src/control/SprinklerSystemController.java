@@ -209,21 +209,21 @@ public class SprinklerSystemController implements Initializable {
 	private void initTimeTemperatureSimulator() {
 		this.timeTemperatureSimulator = new TimeTemperatureSimulator();
 		this.timeTemperatureSimulator.start();
-		waitForThread(500);
+		waitForThread(30);
 	}
 
 	private void initWaterConsumptionSimulator() {
 		this.waterConsumptionSimulator = new WaterConsumptionSimulator(this.timeTemperatureSimulator);
 		this.waterConsumptionSimulator.setBarChart(waterVolumeBarChart);
 		this.waterConsumptionSimulator.start();
-		waitForThread(500);
+		waitForThread(30);
 	}
 
 	private void initSprinklerController() {
 		this.sprinklerController = new SprinklerController(timeTemperatureSimulator, waterConsumptionSimulator,
 				sprinklerGroup);
 		this.sprinklerController.start();
-		waitForThread(500);
+		waitForThread(30);
 	}
 
 	private void initGardenSprinklers() {
